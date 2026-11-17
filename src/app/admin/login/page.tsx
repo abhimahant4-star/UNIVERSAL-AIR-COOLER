@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { Lock, Snowflake } from "lucide-react";
+import { Lock } from "lucide-react";
 import { login, type LoginState } from "../actions";
 
 export default function LoginPage() {
@@ -10,9 +10,8 @@ export default function LoginPage() {
     <main className="grid min-h-screen place-items-center bg-gradient-to-br from-brand-950 via-brand-900 to-brand-700 px-4">
       <div className="w-full max-w-sm rounded-3xl bg-white p-8 shadow-2xl">
         <div className="flex flex-col items-center text-center">
-          <span className="grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-ice text-white">
-            <Snowflake className="h-7 w-7" />
-          </span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-light-sm.webp" alt="Universal Air Cooler logo" width={520} height={325} className="h-20 w-auto" />
           <h1 className="mt-4 text-xl font-extrabold">Admin Login</h1>
           <p className="mt-1 text-sm text-slate-500">Universal Air Cooler</p>
         </div>

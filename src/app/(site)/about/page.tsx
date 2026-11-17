@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Award, CheckCircle2, Eye, Factory, Handshake, Target, Users, Wrench } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import Clients from "@/components/Clients";
-import { CoolerArt } from "@/components/Icons";
 import { getSettings } from "@/lib/settings";
 import { lines } from "@/lib/utils";
 
@@ -43,7 +42,8 @@ export default async function AboutPage() {
             </div>
           </div>
           <div className="relative">
-            <CoolerArt className="aspect-square w-full rounded-3xl" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/install-1.jpg" alt={`${s.siteName} industrial air coolers installed on a factory wall`} width={712} height={565} loading="lazy" className="aspect-[4/3] w-full rounded-3xl object-cover shadow-lg" />
             <div className="absolute -bottom-6 left-6 rounded-2xl bg-brand-600 px-6 py-4 text-white shadow-xl">
               <p className="text-3xl font-extrabold">{s.yearsExperience}</p>
               <p className="text-sm text-brand-100">Years of cooling excellence</p>

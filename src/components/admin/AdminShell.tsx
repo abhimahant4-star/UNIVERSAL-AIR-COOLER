@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ExternalLink, FolderTree, Images, LayoutDashboard, LogOut, Menu, MessageSquare, Package, Settings, Snowflake, X } from "lucide-react";
+import { ExternalLink, FolderTree, Images, LayoutDashboard, LogOut, Menu, MessageSquare, Package, Settings, X } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
 const NAV = [
@@ -24,9 +24,8 @@ export default function AdminShell({ children, name, newEnquiries }: { children:
   const sidebar = (
     <div className="flex h-full flex-col bg-brand-950 text-slate-300">
       <div className="flex items-center gap-2.5 px-5 py-5">
-        <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-ice text-white">
-          <Snowflake className="h-5 w-5" />
-        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo-sm.webp" alt="Logo" width={480} height={317} className="h-10 w-auto rounded-md" />
         <div className="leading-tight">
           <p className="text-sm font-extrabold text-white">UNIVERSAL AIR COOLER</p>
           <p className="text-[11px] text-slate-400">Admin Panel</p>

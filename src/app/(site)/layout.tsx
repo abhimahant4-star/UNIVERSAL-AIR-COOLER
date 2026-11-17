@@ -14,6 +14,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     name: s.siteName,
     description: s.aboutShort,
     url: siteUrl(),
+    logo: `${siteUrl()}/logo.webp`,
+    image: `${siteUrl()}/images/hero-products.jpg`,
     telephone: [s.phone, s.phone2].filter(Boolean),
     email: s.email,
     foundingDate: "1980",

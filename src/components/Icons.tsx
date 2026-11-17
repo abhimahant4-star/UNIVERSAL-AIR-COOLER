@@ -32,32 +32,12 @@ export function YouTubeIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
-/** Illustration used when a product has no uploaded photo yet. */
-export function CoolerArt({ className = "", tone = "sky" }: { className?: string; tone?: "sky" | "teal" | "slate" | "orange" }) {
-  const colors = {
-    sky: ["#e0f2fe", "#38bdf8", "#0369a1"],
-    teal: ["#ccfbf1", "#2dd4bf", "#0f766e"],
-    slate: ["#e2e8f0", "#94a3b8", "#334155"],
-    orange: ["#ffedd5", "#fb923c", "#c2410c"],
-  }[tone];
+/** Shown when a product has no uploaded photo yet: the company logo on white. */
+export function CoolerArt({ className = "" }: { className?: string; tone?: string }) {
   return (
-    <svg viewBox="0 0 300 300" className={className} role="img" aria-label="Air cooler illustration">
-      <rect width="300" height="300" fill={colors[0]} />
-      <circle cx="240" cy="60" r="70" fill="#fff" opacity="0.5" />
-      <g transform="translate(80 30)">
-        <rect width="140" height="220" rx="18" fill={colors[1]} />
-        <rect width="140" height="44" rx="18" fill="#fff" opacity="0.35" />
-        <circle cx="26" cy="22" r="6" fill="#fff" />
-        <circle cx="46" cy="22" r="6" fill="#fff" opacity="0.7" />
-        <rect x="84" y="15" width="38" height="13" rx="6" fill="#fff" opacity="0.85" />
-        <rect x="16" y="58" width="108" height="110" rx="10" fill={colors[2]} opacity="0.4" />
-        {[0, 1, 2, 3, 4, 5].map((i) => (
-          <rect key={i} x="24" y={68 + i * 16} width="92" height="6" rx="3" fill="#fff" opacity="0.9" />
-        ))}
-        <rect x="16" y="180" width="108" height="24" rx="8" fill="#fff" opacity="0.3" />
-        <circle cx="24" cy="228" r="9" fill="#1e293b" />
-        <circle cx="116" cy="228" r="9" fill="#1e293b" />
-      </g>
-    </svg>
+    <span className={`flex items-center justify-center bg-white p-[8%] ${className}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo-light-sm.webp" alt="Universal Air Cooler" className="h-full w-full object-contain" loading="lazy" />
+    </span>
   );
 }

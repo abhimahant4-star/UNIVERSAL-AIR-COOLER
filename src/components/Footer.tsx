@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Clock, Mail, MapPin, Phone, Snowflake } from "lucide-react";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import type { SiteSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { telLink } from "@/lib/utils";
@@ -13,12 +13,8 @@ export default async function Footer({ s }: { s: SiteSettings }) {
     <footer className="bg-brand-950 text-slate-300">
       <div className="container-x grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-ice text-white">
-              <Snowflake className="h-6 w-6" />
-            </span>
-            <span className="text-lg font-extrabold text-white">{s.siteName.toUpperCase()}</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-sm.webp" alt={`${s.siteName} logo`} width={480} height={317} loading="lazy" className="h-24 w-auto rounded-xl ring-1 ring-white/15" />
           <p className="mt-4 text-sm leading-relaxed text-slate-400">{s.aboutShort}</p>
           <SocialLinks s={s} className="mt-5 text-slate-300" />
         </div>

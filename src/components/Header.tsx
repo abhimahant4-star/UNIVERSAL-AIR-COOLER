@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Phone, Snowflake, X } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -23,13 +23,12 @@ export default function Header({ siteName, phone, tel }: { siteName: string; pho
   return (
     <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur">
       <div className="container-x flex h-16 items-center justify-between gap-4 lg:h-20">
-        <Link href="/" className="flex items-center gap-2.5" aria-label={`${siteName} home`}>
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-brand-500 to-ice text-white shadow-md">
-            <Snowflake className="h-6 w-6" />
-          </span>
-          <span className="leading-tight">
-            <span className="block text-base font-extrabold tracking-tight whitespace-nowrap text-slate-900 sm:text-lg">{siteName.toUpperCase()}</span>
-            <span className="block text-[11px] font-medium text-slate-500">Cooling Solutions</span>
+        <Link href="/" className="flex min-w-0 items-center gap-3" aria-label={`${siteName} home`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-light-sm.webp" alt={`${siteName} logo`} width={520} height={325} className="h-12 w-auto shrink-0 lg:h-16" />
+          <span className="hidden leading-tight sm:block">
+            <span className="block text-lg font-extrabold tracking-tight whitespace-nowrap text-slate-900">{siteName.toUpperCase()}</span>
+            <span className="block text-[11px] font-medium text-slate-500">An ISO 9001:2015 Company</span>
           </span>
         </Link>
 

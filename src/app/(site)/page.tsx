@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, BadgeCheck, Droplets, IndianRupee, Phone, ShieldCheck, Truck, Wind, Zap } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Clients from "@/components/Clients";
-import { CoolerArt, WhatsAppIcon } from "@/components/Icons";
+import { WhatsAppIcon } from "@/components/Icons";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { lines, telLink, whatsappLink } from "@/lib/utils";
@@ -58,8 +58,9 @@ export default async function HomePage() {
           </div>
           <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
             <div className="absolute inset-6 rounded-[2.5rem] bg-ice/30 blur-2xl" />
-            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/20 shadow-2xl">
-              <CoolerArt className="h-full w-full" />
+            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/20 bg-white shadow-2xl">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/hero-products.jpg" alt={`${s.siteName} industrial air coolers, duct coolers and portable coolers`} width={1296} height={1400} fetchPriority="high" className="h-auto w-full" />
             </div>
             <div className="absolute -bottom-5 -left-3 rounded-2xl bg-white px-5 py-3 text-slate-900 shadow-xl sm:-left-8">
               <p className="text-2xl font-extrabold text-brand-700">{s.happyCustomers}</p>
@@ -85,8 +86,10 @@ export default async function HomePage() {
       <section className="py-16 sm:py-24">
         <div className="container-x grid items-center gap-12 lg:grid-cols-2">
           <div className="grid grid-cols-2 gap-4">
-            <CoolerArt tone="teal" className="aspect-square w-full rounded-3xl" />
-            <CoolerArt tone="orange" className="mt-10 aspect-square w-full rounded-3xl" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/king.jpg" alt="Universal King portable air cooler" width={900} height={900} loading="lazy" className="aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/industrial.jpg" alt="Universal industrial air cooler" width={900} height={900} loading="lazy" className="mt-10 aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
           </div>
           <div>
             <p className="eyebrow">About {s.siteName}</p>
