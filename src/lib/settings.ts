@@ -43,8 +43,14 @@ export type SiteSettings = typeof DEFAULT_SETTINGS;
 export type SettingKey = keyof SiteSettings;
 
 export const getSettings = cache(async (): Promise<SiteSettings> => {
-  const rows = await prisma.setting.findMany();
   const merged: SiteSettings = { ...DEFAULT_SETTINGS };
+  let rows: { key: string; value: string }[] = [];
+  try {
+    rows = await prisma.setting.findMany();
+  } catch (e) {
+    // Fall back to defaults (e.g. during a build without database access) instead of failing the page.
+    console.error("Could not load site settings:", (e as Error).message);
+  }
   for (const r of rows) {
     if (r.key in merged) (merged as Record<string, string>)[r.key] = r.value;
   }

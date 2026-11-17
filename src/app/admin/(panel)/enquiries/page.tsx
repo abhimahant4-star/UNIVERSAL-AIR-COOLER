@@ -7,7 +7,7 @@ export default async function AdminEnquiries({ searchParams }: { searchParams: P
   const { status = "", q = "" } = await searchParams;
   const where = {
     ...(status in STATUS_LABEL ? { status } : {}),
-    ...(q ? { OR: [{ name: { contains: q } }, { phone: { contains: q } }, { email: { contains: q } }, { message: { contains: q } }] } : {}),
+    ...(q ? { OR: (["name", "phone", "email", "message"] as const).map((f) => ({ [f]: { contains: q, mode: "insensitive" as const } })) } : {}),
   };
   const [enquiries, counts] = await Promise.all([
     prisma.enquiry.findMany({ where, orderBy: { createdAt: "desc" }, include: { product: { select: { name: true } } }, take: 300 }),

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
-type Img = { id: number; url: string; title: string; category: string };
+type Img = { id: string; url: string; title: string; category: string };
 
 export default function GalleryGrid({ images }: { images: Img[] }) {
   const cats = useMemo(() => ["All", ...Array.from(new Set(images.map((i) => i.category)))], [images]);

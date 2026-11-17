@@ -7,9 +7,16 @@ import { prisma } from "@/lib/db";
 import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { DEFAULT_SETTINGS, type SettingKey } from "@/lib/settings";
 import { deleteImage, saveImage, validFiles } from "@/lib/upload";
-import { parseImages, slugify } from "@/lib/utils";
+import { oid, parseImages, slugify } from "@/lib/utils";
 
 const str = (fd: FormData, k: string, max = 5000) => String(fd.get(k) ?? "").trim().slice(0, max);
+
+/** Reads a record id from the form; redirects back with an error if it is missing or malformed. */
+function needId(fd: FormData, path: string): string {
+  const id = oid(fd.get("id"));
+  if (!id) back(path, "error", "Item not found.");
+  return id;
+}
 
 function refreshSite() {
   revalidatePath("/", "layout");
@@ -72,7 +79,7 @@ async function deleteUnusedProductImages(urls: string[]) {
   }
 }
 
-async function uniqueSlug(base: string, excludeId?: number) {
+async function uniqueSlug(base: string, excludeId?: string) {
   const root = slugify(base) || "product";
   let slug = root;
   for (let i = 2; ; i++) {
@@ -82,7 +89,7 @@ async function uniqueSlug(base: string, excludeId?: number) {
   }
 }
 
-export async function saveProduct(id: number | null, fd: FormData) {
+export async function saveProduct(id: string | null, fd: FormData) {
   await requireAdmin();
   const formPath = id ? `/admin/products/${id}` : "/admin/products/new";
   const name = str(fd, "name", 150);
@@ -107,7 +114,7 @@ export async function saveProduct(id: number | null, fd: FormData) {
   const priceRaw = str(fd, "price", 20).replace(/[,\s₹]/g, "");
   const price = priceRaw ? Number(priceRaw) : null;
   if (price !== null && (!Number.isFinite(price) || price < 0)) back(formPath, "error", "Price must be a valid number.");
-  const categoryId = Number(fd.get("categoryId")) || null;
+  const categoryId = oid(fd.get("categoryId"));
 
   const data = {
     name,
@@ -134,7 +141,7 @@ export async function saveProduct(id: number | null, fd: FormData) {
 
 export async function deleteProduct(fd: FormData) {
   await requireAdmin();
-  const id = Number(fd.get("id"));
+  const id = needId(fd, "/admin/products");
   const p = await prisma.product.findUnique({ where: { id } });
   if (p) {
     await prisma.product.delete({ where: { id } });
@@ -146,7 +153,7 @@ export async function deleteProduct(fd: FormData) {
 
 export async function toggleProduct(fd: FormData) {
   await requireAdmin();
-  const id = Number(fd.get("id"));
+  const id = needId(fd, "/admin/products");
   const field = fd.get("field") === "featured" ? "featured" : "active";
   const p = await prisma.product.findUnique({ where: { id } });
   if (p) await prisma.product.update({ where: { id }, data: { [field]: !p[field] } });
@@ -158,7 +165,7 @@ export async function toggleProduct(fd: FormData) {
 
 export async function saveCategory(fd: FormData) {
   await requireAdmin();
-  const id = Number(fd.get("id")) || null;
+  const id = oid(fd.get("id"));
   const name = str(fd, "name", 100);
   if (name.length < 2) back("/admin/categories", "error", "Category name is required.");
   const root = slugify(str(fd, "slug", 100) || name) || "category";
@@ -177,7 +184,7 @@ export async function saveCategory(fd: FormData) {
 
 export async function deleteCategory(fd: FormData) {
   await requireAdmin();
-  await prisma.category.delete({ where: { id: Number(fd.get("id")) } }).catch(() => null);
+  await prisma.category.delete({ where: { id: needId(fd, "/admin/categories") } }).catch(() => null);
   refreshSite();
   back("/admin/categories", "msg", "Category deleted. Its products are now uncategorised.");
 }
@@ -207,7 +214,7 @@ export async function uploadGallery(fd: FormData) {
 
 export async function updateGalleryImage(fd: FormData) {
   await requireAdmin();
-  const id = Number(fd.get("id"));
+  const id = needId(fd, "/admin/gallery");
   await prisma.galleryImage.update({
     where: { id },
     data: { title: str(fd, "title", 150), category: str(fd, "category", 60) || "General", sortOrder: Number(fd.get("sortOrder")) || 0 },
@@ -218,7 +225,7 @@ export async function updateGalleryImage(fd: FormData) {
 
 export async function deleteGalleryImage(fd: FormData) {
   await requireAdmin();
-  const id = Number(fd.get("id"));
+  const id = needId(fd, "/admin/gallery");
   const img = await prisma.galleryImage.findUnique({ where: { id } });
   if (img) {
     await prisma.galleryImage.delete({ where: { id } });
@@ -234,7 +241,7 @@ const STATUSES = ["NEW", "IN_PROGRESS", "RESOLVED"];
 
 export async function updateEnquiry(fd: FormData) {
   await requireAdmin();
-  const id = Number(fd.get("id"));
+  const id = needId(fd, "/admin/enquiries");
   const status = String(fd.get("status"));
   const data: { status?: string; notes?: string } = {};
   if (STATUSES.includes(status)) data.status = status;
@@ -247,7 +254,7 @@ export async function updateEnquiry(fd: FormData) {
 
 export async function deleteEnquiry(fd: FormData) {
   await requireAdmin();
-  await prisma.enquiry.delete({ where: { id: Number(fd.get("id")) } }).catch(() => null);
+  await prisma.enquiry.delete({ where: { id: needId(fd, "/admin/enquiries") } }).catch(() => null);
   revalidatePath("/admin", "layout");
   back("/admin/enquiries", "msg", "Enquiry deleted.");
 }

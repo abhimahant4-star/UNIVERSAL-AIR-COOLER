@@ -1,3 +1,9 @@
+/** Returns the value as a MongoDB ObjectId string, or null if it is not a valid one. */
+export function oid(value: unknown): string | null {
+  const s = String(value ?? "").trim();
+  return /^[a-f0-9]{24}$/i.test(s) ? s : null;
+}
+
 export function slugify(input: string) {
   return input
     .toLowerCase()

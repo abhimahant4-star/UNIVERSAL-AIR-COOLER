@@ -4,7 +4,7 @@ import { CoolerArt } from "./Icons";
 import { formatPrice, parseImages } from "@/lib/utils";
 
 type P = {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   shortDescription: string;
@@ -25,7 +25,7 @@ export default function ProductCard({ p }: { p: P }) {
           // eslint-disable-next-line @next/next/no-img-element
           <img src={img} alt={p.name} loading="lazy" className="h-full w-full object-contain p-3 transition duration-500 group-hover:scale-105" />
         ) : (
-          <CoolerArt tone={TONES[p.id % TONES.length]} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+          <CoolerArt tone={TONES[parseInt(p.id.slice(-2), 16) % TONES.length || 0]} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
         )}
         {p.category && (
           <span className="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 backdrop-blur">{p.category.name}</span>

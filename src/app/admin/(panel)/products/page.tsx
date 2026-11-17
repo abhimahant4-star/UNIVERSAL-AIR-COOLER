@@ -3,7 +3,7 @@ import { Eye, EyeOff, Pencil, Plus, Star } from "lucide-react";
 import { ConfirmButton } from "@/components/admin/ui";
 import { CoolerArt } from "@/components/Icons";
 import { prisma } from "@/lib/db";
-import { formatPrice, parseImages } from "@/lib/utils";
+import { formatPrice, oid, parseImages } from "@/lib/utils";
 import { deleteProduct, toggleProduct } from "../../actions";
 
 export default async function AdminProducts({ searchParams }: { searchParams: Promise<{ q?: string; category?: string }> }) {
@@ -11,8 +11,8 @@ export default async function AdminProducts({ searchParams }: { searchParams: Pr
   const categories = await prisma.category.findMany({ orderBy: { sortOrder: "asc" } });
   const products = await prisma.product.findMany({
     where: {
-      ...(q ? { name: { contains: q } } : {}),
-      ...(category ? { categoryId: Number(category) || -1 } : {}),
+      ...(q ? { name: { contains: q, mode: "insensitive" as const } } : {}),
+      ...(category ? { categoryId: oid(category) ?? "000000000000000000000000" } : {}),
     },
     include: { category: true },
     orderBy: { createdAt: "desc" },

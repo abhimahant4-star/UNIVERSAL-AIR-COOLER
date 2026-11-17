@@ -27,7 +27,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: SP 
     where: {
       active: true,
       ...(active ? { categoryId: active.id } : {}),
-      ...(query ? { OR: [{ name: { contains: query } }, { shortDescription: { contains: query } }] } : {}),
+      ...(query ? { OR: [{ name: { contains: query, mode: "insensitive" as const } }, { shortDescription: { contains: query, mode: "insensitive" as const } }] } : {}),
     },
     include: { category: true },
     orderBy: [{ featured: "desc" }, { createdAt: "desc" }],

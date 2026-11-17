@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { CheckCircle2, Send } from "lucide-react";
 import { submitEnquiry, type EnquiryState } from "@/app/actions";
 
-type Props = { productId?: number; productName?: string; compact?: boolean };
+type Props = { productId?: string; productName?: string; compact?: boolean };
 
 export default function EnquiryForm({ productId, productName, compact }: Props) {
   const [state, action, pending] = useActionState<EnquiryState, FormData>(submitEnquiry, { ok: false, message: "" });

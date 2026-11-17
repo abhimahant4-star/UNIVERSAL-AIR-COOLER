@@ -2,19 +2,24 @@
 // Safe to re-run: products and gallery are only created when those tables are empty.
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { copyFile, mkdir } from "fs/promises";
+import { readFile } from "fs/promises";
 import path from "path";
 import { categories, gallery, products } from "./catalog.mjs";
 
 const prisma = new PrismaClient();
 const SEED_IMAGES = path.join(process.cwd(), "prisma", "seed-images");
-const UPLOADS = path.join(process.cwd(), "uploads");
 
-/** Copies a seed image into uploads/<folder>/ and returns its public URL. */
+/** Stores a seed image in the Upload collection and returns its public URL (/uploads/<folder>/<file>). */
 async function publish(folder, file) {
-  await mkdir(path.join(UPLOADS, folder), { recursive: true });
-  await copyFile(path.join(SEED_IMAGES, folder, file), path.join(UPLOADS, folder, file));
-  return `/uploads/${folder}/${file}`;
+  const key = `${folder}/${file}`;
+  const data = await readFile(path.join(SEED_IMAGES, folder, file));
+  const contentType = file.endsWith(".png") ? "image/png" : "image/jpeg";
+  await prisma.upload.upsert({
+    where: { path: key },
+    update: { data, size: data.length, contentType },
+    create: { path: key, data, size: data.length, contentType },
+  });
+  return `/uploads/${key}`;
 }
 
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);

@@ -5,12 +5,12 @@ import StatusBadge, { STATUS_LABEL } from "@/components/admin/StatusBadge";
 import { ConfirmButton, SubmitButton } from "@/components/admin/ui";
 import { WhatsAppIcon } from "@/components/Icons";
 import { prisma } from "@/lib/db";
-import { formatDate, telLink, whatsappLink } from "@/lib/utils";
+import { formatDate, oid, telLink, whatsappLink } from "@/lib/utils";
 import { deleteEnquiry, updateEnquiry } from "../../../actions";
 
 export default async function EnquiryDetail({ params }: { params: Promise<{ id: string }> }) {
-  const id = Number((await params).id);
-  const e = Number.isInteger(id) ? await prisma.enquiry.findUnique({ where: { id }, include: { product: true } }) : null;
+  const id = oid((await params).id);
+  const e = id ? await prisma.enquiry.findUnique({ where: { id }, include: { product: true } }) : null;
   if (!e) notFound();
 
   const rows = [
@@ -29,7 +29,7 @@ export default async function EnquiryDetail({ params }: { params: Promise<{ id: 
         <ArrowLeft className="h-4 w-4" /> All enquiries
       </Link>
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-extrabold">Enquiry #{e.id}</h1>
+        <h1 className="text-2xl font-extrabold">Enquiry #{e.id.slice(-6).toUpperCase()}</h1>
         <StatusBadge status={e.status} />
       </div>
 

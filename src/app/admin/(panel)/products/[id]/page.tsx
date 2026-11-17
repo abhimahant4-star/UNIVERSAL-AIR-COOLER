@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import ProductForm from "@/components/admin/ProductForm";
 import { prisma } from "@/lib/db";
+import { oid } from "@/lib/utils";
 import { saveProduct } from "../../../actions";
 
 export default async function EditProduct({ params }: { params: Promise<{ id: string }> }) {
-  const id = Number((await params).id);
+  const id = oid((await params).id);
   const [product, categories] = await Promise.all([
-    Number.isInteger(id) ? prisma.product.findUnique({ where: { id } }) : null,
+    id ? prisma.product.findUnique({ where: { id } }) : null,
     prisma.category.findMany({ orderBy: { sortOrder: "asc" } }),
   ]);
   if (!product) notFound();

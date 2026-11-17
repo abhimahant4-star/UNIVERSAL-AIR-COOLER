@@ -10,7 +10,7 @@ function secret() {
   return new TextEncoder().encode(s);
 }
 
-export type SessionPayload = { adminId: number; email: string; name: string };
+export type SessionPayload = { adminId: string; email: string; name: string };
 
 export async function signSession(payload: SessionPayload) {
   return new SignJWT(payload)
@@ -24,6 +24,8 @@ export async function verifySession(token?: string | null): Promise<SessionPaylo
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, secret());
+    // Reject sessions from before the MongoDB switch (numeric admin ids).
+    if (typeof payload.adminId !== "string" || !/^[a-f0-9]{24}$/i.test(payload.adminId)) return null;
     return payload as unknown as SessionPayload;
   } catch {
     return null;

@@ -1,10 +1,10 @@
 import "server-only";
 import { randomBytes } from "crypto";
-import { mkdir, unlink, writeFile } from "fs/promises";
-import path from "path";
+import { prisma } from "./db";
 
-export const UPLOAD_ROOT = path.join(process.cwd(), "uploads");
-const MAX_BYTES = 5 * 1024 * 1024;
+// Images are stored in MongoDB (Upload collection) and served by src/app/uploads/[...path]/route.ts.
+// Keep each file under ~4 MB: Vercel rejects request bodies over 4.5 MB.
+const MAX_BYTES = 4 * 1024 * 1024;
 const ALLOWED: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/png": "png",
@@ -21,18 +21,15 @@ export function validFiles(list: FormDataEntryValue[]) {
 export async function saveImage(file: File, folder: "products" | "gallery" | "site"): Promise<string> {
   const ext = ALLOWED[file.type];
   if (!ext) throw new Error(`Unsupported image type for ${file.name}. Use JPG, PNG, WEBP, GIF or AVIF.`);
-  if (file.size > MAX_BYTES) throw new Error(`${file.name} is larger than 5 MB.`);
-  const dir = path.join(UPLOAD_ROOT, folder);
-  await mkdir(dir, { recursive: true });
-  const name = `${Date.now()}-${randomBytes(6).toString("hex")}.${ext}`;
-  await writeFile(path.join(dir, name), Buffer.from(await file.arrayBuffer()));
-  return `/uploads/${folder}/${name}`;
+  if (file.size > MAX_BYTES) throw new Error(`${file.name} is larger than 4 MB. Please resize it and try again.`);
+  const path = `${folder}/${Date.now()}-${randomBytes(6).toString("hex")}.${ext}`;
+  const data = new Uint8Array(await file.arrayBuffer());
+  await prisma.upload.create({ data: { path, contentType: file.type, size: data.byteLength, data } });
+  return `/uploads/${path}`;
 }
 
-/** Deletes a file previously returned by saveImage. Ignores anything outside the uploads folder. */
+/** Deletes an image previously returned by saveImage. Ignores anything that is not an upload URL. */
 export async function deleteImage(url: string) {
   if (!url.startsWith("/uploads/")) return;
-  const target = path.normalize(path.join(UPLOAD_ROOT, url.slice("/uploads/".length)));
-  if (!target.startsWith(UPLOAD_ROOT + path.sep)) return;
-  await unlink(target).catch(() => {});
+  await prisma.upload.deleteMany({ where: { path: url.slice("/uploads/".length) } }).catch(() => {});
 }

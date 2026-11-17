@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { oid } from "@/lib/utils";
 
 export type EnquiryState = { ok: boolean; message: string; errors?: Record<string, string> };
 
@@ -18,7 +19,7 @@ export async function submitEnquiry(_prev: EnquiryState, formData: FormData): Pr
   const city = get("city", 80);
   const subject = get("subject", 150);
   const message = get("message", 3000);
-  const productId = Number(formData.get("productId")) || null;
+  const productId = oid(formData.get("productId"));
 
   const errors: Record<string, string> = {};
   if (name.length < 2) errors.name = "Please enter your name.";

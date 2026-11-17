@@ -2,15 +2,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// SQLite for local/dev. For production you can switch provider to "mysql" or
-// "postgresql" and point DATABASE_URL at that server — no code changes needed.
+// MongoDB (for example MongoDB Atlas). DATABASE_URL must include the database name,
+// e.g. mongodb+srv://user:pass@cluster0.xxxxx.mongodb.net/universal-air-cooler
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model Admin {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
   email        String   @unique
   name         String   @default("Admin")
   passwordHash String
@@ -18,7 +18,7 @@ model Admin {
 }
 
 model Category {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   slug        String    @unique
   description String    @default("")
@@ -28,15 +28,15 @@ model Category {
 }
 
 model Product {
-  id               Int       @id @default(autoincrement())
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
   name             String
   slug             String    @unique
-  categoryId       Int?
+  categoryId       String?   @db.ObjectId
   category         Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   shortDescription String    @default("")
   description      String    @default("")
   features         String    @default("") // one per line
-  specs            String    @default("") // "Label: Value" per line
+  specs            String    @default("") // "Label: Value" per line, "|"-lines for a model table
   price            Float?
   showPrice        Boolean   @default(false)
   images           String    @default("[]") // JSON array of image URLs
@@ -50,7 +50,7 @@ model Product {
 }
 
 model GalleryImage {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   url       String
   title     String   @default("")
   category  String   @default("General")
@@ -59,14 +59,14 @@ model GalleryImage {
 }
 
 model Enquiry {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   phone     String
   email     String   @default("")
   city      String   @default("")
   subject   String   @default("")
   message   String
-  productId Int?
+  productId String?  @db.ObjectId
   product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   status    String   @default("NEW") // NEW | IN_PROGRESS | RESOLVED
   notes     String   @default("")
@@ -75,6 +75,17 @@ model Enquiry {
 }
 
 model Setting {
-  key   String @id
+  key   String @id @map("_id")
   value String
+}
+
+// Uploaded images are stored in the database, so the site needs no writable disk (works on Vercel).
+// Served at /uploads/<path>.
+model Upload {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  path        String   @unique // e.g. "products/1700000000-ab12cd.jpg"
+  contentType String
+  size        Int
+  data        Bytes
+  createdAt   DateTime @default(now())
 }
