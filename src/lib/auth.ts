@@ -2,6 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { SESSION_COOKIE, SESSION_MAX_AGE, signSession, verifySession, type SessionPayload } from "./session";
+import { siteUrl } from "./utils";
 
 export async function getSession() {
   const store = await cookies();
@@ -21,7 +22,7 @@ export async function createSession(payload: SessionPayload) {
   store.set(SESSION_COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production" && (process.env.NEXT_PUBLIC_SITE_URL || "").startsWith("https"),
+    secure: process.env.NODE_ENV === "production" && siteUrl().startsWith("https"),
     path: "/",
     maxAge: SESSION_MAX_AGE,
   });

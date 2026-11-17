@@ -67,9 +67,14 @@ export function Flash() {
   );
 }
 
-/** File input with live thumbnails of the chosen images. */
+// The hosting platform (Vercel) rejects requests over 4.5 MB, so one save must stay under that in total.
+const MAX_FILE_MB = 4;
+const MAX_TOTAL_MB = 4.3;
+
+/** File input with live thumbnails of the chosen images. Rejects selections that are too large to upload. */
 export function ImagePicker({ name, multiple = true }: { name: string; multiple?: boolean }) {
   const [previews, setPreviews] = useState<string[]>([]);
+  const [error, setError] = useState("");
   useEffect(() => () => previews.forEach((p) => URL.revokeObjectURL(p)), [previews]);
   return (
     <div>
@@ -79,9 +84,29 @@ export function ImagePicker({ name, multiple = true }: { name: string; multiple?
         accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
         multiple={multiple}
         className="block w-full text-sm text-slate-600 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-brand-700 hover:file:bg-brand-100"
-        onChange={(e) => setPreviews(Array.from(e.target.files ?? []).map((f) => URL.createObjectURL(f)))}
+        onChange={(e) => {
+          const files = Array.from(e.target.files ?? []);
+          const mb = (n: number) => n / 1024 / 1024;
+          const big = files.find((f) => mb(f.size) > MAX_FILE_MB);
+          const total = mb(files.reduce((s, f) => s + f.size, 0));
+          const problem = big
+            ? `"${big.name}" is ${mb(big.size).toFixed(1)} MB. Each image must be under ${MAX_FILE_MB} MB; please resize it.`
+            : total > MAX_TOTAL_MB
+              ? `These images total ${total.toFixed(1)} MB. Upload under ${MAX_TOTAL_MB} MB at a time (choose fewer images and save in batches).`
+              : "";
+          setError(problem);
+          if (problem) {
+            e.target.value = "";
+            setPreviews([]);
+            return;
+          }
+          setPreviews(files.map((f) => URL.createObjectURL(f)));
+        }}
       />
-      <p className="mt-1 text-xs text-slate-500">JPG, PNG, WEBP, GIF or AVIF. Max 5 MB each.</p>
+      <p className="mt-1 text-xs text-slate-500">
+        JPG, PNG, WEBP, GIF or AVIF. Under {MAX_FILE_MB} MB each, and under {MAX_TOTAL_MB} MB in total per save.
+      </p>
+      {error && <p className="mt-2 rounded-lg bg-red-50 px-3 py-2 text-sm font-medium text-red-700">{error}</p>}
       {previews.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
           {previews.map((p) => (

@@ -25,9 +25,12 @@ async function publish(folder, file) {
 const slugify = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 80);
 
 async function main() {
-  const email = process.env.ADMIN_EMAIL || "admin@universalaircooler.com";
-  const password = process.env.ADMIN_PASSWORD || "Admin@12345";
-  if (!(await prisma.admin.findUnique({ where: { email } }))) {
+  // The first admin comes from ADMIN_EMAIL / ADMIN_PASSWORD in .env. There is deliberately no default password.
+  const email = (process.env.ADMIN_EMAIL || "").trim().toLowerCase();
+  const password = process.env.ADMIN_PASSWORD || "";
+  if (!email || password.length < 8) {
+    console.warn("Skipping admin user: set ADMIN_EMAIL and an ADMIN_PASSWORD of at least 8 characters in .env.");
+  } else if (!(await prisma.admin.findUnique({ where: { email } }))) {
     await prisma.admin.create({ data: { email, name: "Administrator", passwordHash: await bcrypt.hash(password, 10) } });
     console.log(`Created admin user ${email}`);
   }

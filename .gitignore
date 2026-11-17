@@ -3,7 +3,7 @@ node_modules
 .env
 prisma/*.db
 prisma/*.db-journal
-uploads/*
-!uploads/.gitkeep
+uploads/
+.vercel
 next-env.d.ts
 *.tsbuildinfo

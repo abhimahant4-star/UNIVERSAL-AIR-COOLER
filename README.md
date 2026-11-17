@@ -40,16 +40,16 @@ npm run setup     # creates the indexes and loads the products, gallery and admi
 npm run dev       # http://localhost:3000
 ```
 
-Admin login: the `ADMIN_EMAIL` and `ADMIN_PASSWORD` values in `.env` (used only when the seed first creates the admin). **Change the password from Admin → Website Settings after your first login.**
+Admin login: the `ADMIN_EMAIL` and `ADMIN_PASSWORD` values in `.env`. They are only used by `npm run setup` to create the first admin account (there is no default password). After that, change the password from **Admin → Website Settings**; changing `.env` later does not change it.
 
-## Environment variables (`.env`)
+## Environment variables
 
-| Variable | Purpose |
-| --- | --- |
-| `DATABASE_URL` | MongoDB connection string with the database name, e.g. `mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/universal-air-cooler` |
-| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | First admin account, created by `npm run db:seed` |
-| `JWT_SECRET` | Long random string used to sign admin sessions |
-| `NEXT_PUBLIC_SITE_URL` | Live domain, e.g. `https://www.universalaircooler.com` (used in sitemap, robots and SEO tags) |
+| Variable | Needed by | Purpose |
+| --- | --- | --- |
+| `DATABASE_URL` | Website + setup | MongoDB connection string with the database name, e.g. `mongodb+srv://USER:PASSWORD@cluster0.xxxxx.mongodb.net/universal-air-cooler` |
+| `JWT_SECRET` | Website | Long random string used to sign admin logins. Keep it secret. Changing it logs everyone out. |
+| `NEXT_PUBLIC_SITE_URL` | Website (optional) | Live address, e.g. `https://www.universalaircooler.in`, used in the sitemap, robots.txt and SEO tags. On Vercel it defaults to the project's production domain. |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | Setup only | First admin account, created by `npm run setup`. Not needed on Vercel. |
 
 ## Production deployment
 
@@ -57,9 +57,9 @@ Admin login: the `ADMIN_EMAIL` and `ADMIN_PASSWORD` values in `.env` (used only 
 
 1. **MongoDB Atlas:** create a free cluster and a database user. Under *Network Access* allow `0.0.0.0/0`, because Vercel has no fixed IP address. Copy the connection string and add the database name before the `?`.
 2. **Load the data once** from your computer: put that string in `.env` as `DATABASE_URL` and run `npm run setup`.
-3. **Vercel:** import the GitHub repository, then under *Settings → Environment Variables* add `DATABASE_URL`, `JWT_SECRET` (a long random string), `ADMIN_EMAIL`, `ADMIN_PASSWORD` and `NEXT_PUBLIC_SITE_URL` (your live domain), and redeploy.
+3. **Vercel:** import the GitHub repository. Before (or after) the first deploy, open *Settings → Environment Variables* and add `DATABASE_URL` and `JWT_SECRET` (copy both from `.env`, without the quote marks), plus `NEXT_PUBLIC_SITE_URL` once you have a custom domain. Then *Deployments → ⋯ → Redeploy*, because variables only take effect on a new deployment.
 
-Every `git push` to `main` then redeploys the site. Images uploaded through the admin panel must be under 4 MB each, because Vercel limits request size.
+Every `git push` to `main` then redeploys the site. Images uploaded through the admin panel must be under 4 MB each (and under about 4.3 MB per save), because Vercel limits request size.
 
 ### VPS or other Node.js host
 
