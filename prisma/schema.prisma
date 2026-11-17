@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// SQLite for local/dev. For production you can switch provider to "mysql" or
+// "postgresql" and point DATABASE_URL at that server — no code changes needed.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  name         String   @default("Admin")
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String    @default("")
+  sortOrder   Int       @default(0)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+}
+
+model Product {
+  id               Int       @id @default(autoincrement())
+  name             String
+  slug             String    @unique
+  categoryId       Int?
+  category         Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  shortDescription String    @default("")
+  description      String    @default("")
+  features         String    @default("") // one per line
+  specs            String    @default("") // "Label: Value" per line
+  price            Float?
+  showPrice        Boolean   @default(false)
+  images           String    @default("[]") // JSON array of image URLs
+  featured         Boolean   @default(false)
+  active           Boolean   @default(true)
+  metaTitle        String    @default("")
+  metaDescription  String    @default("")
+  enquiries        Enquiry[]
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model GalleryImage {
+  id        Int      @id @default(autoincrement())
+  url       String
+  title     String   @default("")
+  category  String   @default("General")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Enquiry {
+  id        Int      @id @default(autoincrement())
+  name      String
+  phone     String
+  email     String   @default("")
+  city      String   @default("")
+  subject   String   @default("")
+  message   String
+  productId Int?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  status    String   @default("NEW") // NEW | IN_PROGRESS | RESOLVED
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  key   String @id
+  value String
+}
