@@ -3,8 +3,8 @@
 // Specs: "Label: Value" lines, plus optional "|"-lines that render as a model table (first "|" line = header).
 
 export const categories = [
-  { slug: "evaporative-air-cooling-systems", name: "Evaporative Air Cooling Systems", description: "Axial fan series duct-type evaporative air cooling systems with up, down and side discharge for factories and large spaces." },
   { slug: "industrial-coolers", name: "Industrial Coolers", description: "Star Universal industrial and mobile industrial air coolers for factories, textile mills, hosiery units and warehouses." },
+  { slug: "evaporative-air-cooling-systems", name: "Evaporative Air Cooling Systems", description: "Axial fan series duct-type evaporative air cooling systems with up, down and side discharge for factories and large spaces." },
   { slug: "commercial-coolers", name: "Commercial Coolers", description: "Heavy-duty commercial air coolers for shops, showrooms, halls, restaurants and workshops." },
   { slug: "desert-coolers", name: "Desert Coolers", description: "High air-throw desert coolers for homes, shops, offices and halls." },
   { slug: "portable-coolers", name: "Portable Coolers", description: "Easy-to-move coolers for flexible, spot cooling wherever it is needed." },

@@ -23,7 +23,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: SP 
   const active = categories.find((c) => c.slug === category);
   const query = (q || "").trim().slice(0, 80);
 
-  const products = await prisma.product.findMany({
+  const found = await prisma.product.findMany({
     where: {
       active: true,
       ...(active ? { categoryId: active.id } : {}),
@@ -32,6 +32,12 @@ export default async function ProductsPage({ searchParams }: { searchParams: SP 
     include: { category: true },
     orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
   });
+  // Group by category, in the order set under Admin → Categories (Industrial Coolers first); featured, then newest within each
+  const rank = new Map(categories.map((c, i) => [c.id, i]));
+  const products = found
+    .map((p, i) => ({ p, i }))
+    .sort((a, b) => (rank.get(a.p.categoryId ?? "") ?? 1e6) - (rank.get(b.p.categoryId ?? "") ?? 1e6) || a.i - b.i)
+    .map(({ p }) => p);
 
   const href = (slug?: string) => {
     const p = new URLSearchParams();
