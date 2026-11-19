@@ -89,3 +89,34 @@ model Upload {
   data        Bytes
   createdAt   DateTime @default(now())
 }
+
+// Downloadable PDF catalogues. The PDF is stored in pieces (CatalogueChunk, max ~3.5 MB each)
+// so files of any size can be uploaded and downloaded within Vercel's 4.5 MB request limit.
+// Served at /catalogues/<slug>.pdf.
+model Catalogue {
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  slug        String           @unique
+  description String           @default("")
+  fileName    String
+  size        Int
+  chunkCount  Int
+  coverUrl    String           @default("")
+  sortOrder   Int              @default(0)
+  visible     Boolean          @default(true)
+  ready       Boolean          @default(false) // true once every chunk has been uploaded
+  downloads   Int              @default(0)
+  chunks      CatalogueChunk[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model CatalogueChunk {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  catalogueId String    @db.ObjectId
+  catalogue   Catalogue @relation(fields: [catalogueId], references: [id], onDelete: Cascade)
+  index       Int
+  data        Bytes
+
+  @@unique([catalogueId, index])
+}

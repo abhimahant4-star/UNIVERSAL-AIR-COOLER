@@ -3,14 +3,16 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ExternalLink, FolderTree, Images, LayoutDashboard, LogOut, Menu, MessageSquare, Package, Settings, X } from "lucide-react";
+import { ExternalLink, FileText, FolderTree, Images, LayoutDashboard, LogOut, Menu, MessageSquare, Package, Presentation, Settings, X } from "lucide-react";
 import { logout } from "@/app/admin/actions";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
-  { href: "/admin/gallery", label: "Gallery", icon: Images },
+  { href: "/admin/installation", label: "Product Installation", icon: Images },
+  { href: "/admin/exhibitions", label: "Exhibition Participation", icon: Presentation },
+  { href: "/admin/catalogues", label: "Catalogues", icon: FileText },
   { href: "/admin/enquiries", label: "Enquiries", icon: MessageSquare },
   { href: "/admin/settings", label: "Website Settings", icon: Settings },
 ];

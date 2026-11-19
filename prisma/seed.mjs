@@ -1,13 +1,15 @@
-// Seeds the first admin user, categories, products and gallery images (data in ./catalog.mjs).
-// Safe to re-run: products and gallery are only created when those tables are empty.
+// Seeds the first admin user, categories, products, gallery images and PDF catalogues (data in ./catalog.mjs).
+// Safe to re-run: products, gallery and catalogues are only created when those tables are empty.
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { readFile } from "fs/promises";
 import path from "path";
-import { categories, gallery, products } from "./catalog.mjs";
+import { catalogues, categories, gallery, products } from "./catalog.mjs";
 
 const prisma = new PrismaClient();
 const SEED_IMAGES = path.join(process.cwd(), "prisma", "seed-images");
+const SEED_CATALOGUES = path.join(process.cwd(), "prisma", "seed-catalogues");
+const CHUNK_SIZE = 3.5 * 1024 * 1024; // same as src/lib/catalogue.ts
 
 /** Stores a seed image in the Upload collection and returns its public URL (/uploads/<folder>/<file>). */
 async function publish(folder, file) {
@@ -68,6 +70,29 @@ async function main() {
       await prisma.galleryImage.create({ data: { url, title: g.title, category: g.category, sortOrder: i++ } });
     }
     console.log(`Created ${gallery.length} gallery images`);
+  }
+
+  if ((await prisma.catalogue.count()) === 0) {
+    let order = 1;
+    for (const c of catalogues) {
+      const pdf = await readFile(path.join(SEED_CATALOGUES, `${c.slug}.pdf`));
+      const cover = await readFile(path.join(SEED_CATALOGUES, `${c.slug}.jpg`)).catch(() => null);
+      let coverUrl = "";
+      if (cover) {
+        const key = `site/catalogue-${c.slug}.jpg`;
+        await prisma.upload.upsert({ where: { path: key }, update: { data: cover, size: cover.length }, create: { path: key, data: cover, size: cover.length, contentType: "image/jpeg" } });
+        coverUrl = `/uploads/${key}`;
+      }
+      const chunkCount = Math.max(1, Math.ceil(pdf.length / CHUNK_SIZE));
+      const row = await prisma.catalogue.create({
+        data: { slug: c.slug, title: c.title, description: c.description, fileName: c.fileName, size: pdf.length, chunkCount, coverUrl, sortOrder: order++ },
+      });
+      for (let i = 0; i < chunkCount; i++) {
+        await prisma.catalogueChunk.create({ data: { catalogueId: row.id, index: i, data: pdf.subarray(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE) } });
+      }
+      await prisma.catalogue.update({ where: { id: row.id }, data: { ready: true } });
+    }
+    console.log(`Created ${catalogues.length} catalogues`);
   }
 }
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Phone, X } from "lucide-react";
+import { Download, Menu, Phone, X } from "lucide-react";
 import { NAV } from "@/lib/nav";
 
 export default function Header({ siteName, phone, tel }: { siteName: string; phone: string; tel: string }) {
@@ -30,7 +30,7 @@ export default function Header({ siteName, phone, tel }: { siteName: string; pho
             <Link
               key={n.href}
               href={n.href}
-              className={`rounded-full px-3 py-2 text-[13.5px] font-semibold whitespace-nowrap transition ${
+              className={`rounded-full px-2.5 py-2 text-[13.5px] font-semibold 2xl:px-3 whitespace-nowrap transition ${
                 isActive(n.href) ? "bg-brand-50 text-brand-700" : "text-slate-700 hover:text-brand-700"
               }`}
             >
@@ -39,7 +39,17 @@ export default function Header({ siteName, phone, tel }: { siteName: string; pho
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 xl:flex">
+        <div className="hidden items-center gap-2 xl:flex">
+          <Link
+            href="/catalogues"
+            title="Download Catalogues"
+            aria-label="Download Catalogues"
+            className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border transition ${
+              isActive("/catalogues") ? "border-brand-300 bg-brand-50 text-brand-700" : "border-slate-200 text-slate-700 hover:border-brand-300 hover:text-brand-700"
+            }`}
+          >
+            <Download className="h-[18px] w-[18px]" />
+          </Link>
           <Link href="/contact#enquiry" className="btn-primary whitespace-nowrap">
             Get a Quote
           </Link>
@@ -72,6 +82,12 @@ export default function Header({ siteName, phone, tel }: { siteName: string; pho
                 {n.label}
               </Link>
             ))}
+            <Link
+              href="/catalogues"
+              className={`flex items-center gap-2 rounded-lg px-3 py-3 text-base font-semibold ${isActive("/catalogues") ? "bg-brand-50 text-brand-700" : "text-brand-700"}`}
+            >
+              <Download className="h-5 w-5" /> Download Catalogues
+            </Link>
             <div className="mt-3 flex gap-3 px-1 pb-2">
               <a href={tel} className="btn-outline flex-1">
                 <Phone className="h-4 w-4" /> Call

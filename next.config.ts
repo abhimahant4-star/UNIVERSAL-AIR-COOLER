@@ -10,7 +10,10 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // The Gallery page was renamed; keep old links and search results working
   async redirects() {
-    return [{ source: "/gallery", destination: "/product-installation", permanent: true }];
+    return [
+      { source: "/gallery", destination: "/product-installation", permanent: true },
+      { source: "/admin/gallery", destination: "/admin/installation", permanent: false },
+    ];
   },
 };
 

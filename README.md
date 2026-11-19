@@ -8,7 +8,10 @@ A custom-coded, fully responsive 5-page business website with a dynamic admin pa
 - **Home** (`/`): hero, company intro, stats, product categories, featured products, business highlights, gallery preview, call/enquiry/WhatsApp buttons
 - **About Us** (`/about`): company introduction, business profile, mission and vision
 - **Our Products** (`/products`): dynamic listing with category filter and search; product detail pages (`/products/[slug]`) with image gallery, features, specs table, enquiry form and WhatsApp button
-- **Gallery** (`/gallery`): dynamic image gallery with category filter and lightbox
+- **Product Installation** (`/product-installation`, old `/gallery` links redirect here): installation photos with group filter and lightbox
+- **Exhibition Participation** (`/exhibitions`): trade fair and exhibition photos
+- **Our Prestigious Customers** (`/customers`)
+- **Download Catalogues** (`/catalogues`): PDF catalogues to view online or download (`/catalogues/<name>.pdf`)
 - **Contact Us** (`/contact`): contact info, enquiry form, WhatsApp button, Google Maps embed
 - Floating WhatsApp button on every page
 
@@ -17,7 +20,8 @@ A custom-coded, fully responsive 5-page business website with a dynamic admin pa
 - Dashboard with counts and recent enquiries
 - Products: add, edit, delete, upload multiple images, choose a cover image, set prices and show or hide them, mark as featured, hide or show, per-product SEO title and description
 - Categories: add, edit, reorder, delete
-- Gallery: upload multiple images, edit title, category and order, delete
+- Product Installation and Exhibition Participation: upload multiple photos, edit caption, group and order, delete (each section fills its own website page)
+- Catalogues: upload PDF catalogues of any size up to 100 MB (sent in 3.5 MB pieces, so it works within Vercel's 4.5 MB request limit), optional cover image, edit title/description/order, show or hide, see view/download counts, delete
 - Enquiries: list, filter by status, search, view details, set status (New / In Progress / Resolved), internal notes, call/WhatsApp/email the customer, delete
 - Website settings: business details, WhatsApp number, Google Maps embed, home and about page text, stats, social links, Google Search Console verification code
 - Change admin password
@@ -85,7 +89,8 @@ npm start          # or run with pm2: pm2 start npm --name uac -- start
 prisma/schema.prisma        database models
 prisma/seed.mjs             first admin user + initial catalogue
 prisma/catalog.mjs          initial categories, products (with specs) and gallery, from the brochures
-prisma/seed-images/         product and gallery photos cropped from the brochures
+prisma/seed-images/         product, installation and exhibition photos
+prisma/seed-catalogues/     PDF catalogues loaded by `npm run setup`
 src/app/(site)/             public pages (home, about, products, gallery, contact)
 src/app/admin/              admin login + panel pages, server actions
 src/app/uploads/            serves uploaded images (stored in MongoDB)

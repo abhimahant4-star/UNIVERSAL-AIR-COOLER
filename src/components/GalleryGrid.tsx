@@ -36,19 +36,22 @@ export default function GalleryGrid({ images }: { images: Img[] }) {
 
   return (
     <>
-      <div className="mb-8 flex flex-wrap justify-center gap-2" role="tablist" aria-label="Gallery categories">
-        {cats.map((c) => (
-          <button
-            key={c}
-            role="tab"
-            aria-selected={cat === c}
-            onClick={() => setCat(c)}
-            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${cat === c ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
+      {/* Filter buttons only make sense with two or more groups ("All" + groups) */}
+      {cats.length > 2 && (
+        <div className="mb-8 flex flex-wrap justify-center gap-2" role="tablist" aria-label="Photo groups">
+          {cats.map((c) => (
+            <button
+              key={c}
+              role="tab"
+              aria-selected={cat === c}
+              onClick={() => setCat(c)}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition ${cat === c ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
         {shown.map((img, i) => (

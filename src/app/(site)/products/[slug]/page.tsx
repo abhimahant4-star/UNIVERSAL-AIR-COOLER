@@ -1,6 +1,7 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { CheckCircle2, Phone } from "lucide-react";
+import { CheckCircle2, Download, Phone } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import ProductCard from "@/components/ProductCard";
 import ProductImages from "@/components/ProductImages";
@@ -86,6 +87,9 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
               <a href={telLink(s.phone)} className="btn-outline px-6 py-3">
                 <Phone className="h-4 w-4" /> Call
               </a>
+              <Link href="/catalogues" className="btn-outline px-6 py-3">
+                <Download className="h-4 w-4" /> Catalogue
+              </Link>
             </div>
 
             {features.length > 0 && (

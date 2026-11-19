@@ -423,4 +423,31 @@ export const gallery = [
   { file: "app-5.jpg", title: "Galvanised air distribution ducting inside a factory", category: "Ducting" },
   { file: "app-6.jpg", title: "Star Universal industrial cooler with duct stand", category: "Projects" },
   { file: "brochure-cover.jpg", title: "Star Universal industrial, commercial and duct cooling solutions", category: "Products" },
+  // Exhibition Participation page
+  { file: "exhibition-01.jpg", title: "Star Universal industrial air cooler on display", category: "Exhibition" },
+  { file: "exhibition-02.jpg", title: "Universal Industrial Air Cooler stall", category: "Exhibition" },
+  { file: "exhibition-03.jpg", title: "Our stall with industrial coolers and catalogues", category: "Exhibition" },
+  { file: "exhibition-04.jpg", title: "Industrial coolers and exhaust fans on display", category: "Exhibition" },
+  { file: "exhibition-05.jpg", title: "Visitors at the Universal Coolers stall", category: "Exhibition" },
+  { file: "exhibition-06.jpg", title: "Visitors exploring our commercial air coolers", category: "Exhibition" },
+  { file: "exhibition-07.jpg", title: "Live product demonstration for visitors", category: "Exhibition" },
+  { file: "exhibition-08.jpg", title: "Explaining cooler features to a customer", category: "Exhibition" },
+  { file: "exhibition-09.jpg", title: "Industrial coolers and mist fans at our stall", category: "Exhibition" },
+  { file: "exhibition-10.jpg", title: "A busy day at our exhibition stall", category: "Exhibition" },
+];
+
+// Downloadable PDF catalogues (files in ./seed-catalogues: <slug>.pdf and <slug>.jpg cover)
+export const catalogues = [
+  {
+    slug: "star-universal-cooling-solutions",
+    title: "Industrial, Commercial & Duct Cooling Solutions",
+    description: "Star Universal industrial and duct coolers, the Commercial Cooler 150L and exhaust fans, with technical specifications.",
+    fileName: "Star-Universal-Cooling-Solutions.pdf",
+  },
+  {
+    slug: "universal-commercial-air-coolers",
+    title: "Commercial Air Coolers",
+    description: 'Rolex 17", King 18", Big Boss 22" and Velar 26" commercial air coolers with their features.',
+    fileName: "Universal-Commercial-Air-Coolers.pdf",
+  },
 ];

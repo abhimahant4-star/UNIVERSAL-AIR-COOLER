@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Download, Search } from "lucide-react";
 import PageHero from "@/components/PageHero";
 import ProductCard from "@/components/ProductCard";
 import { prisma } from "@/lib/db";
@@ -83,6 +83,15 @@ export default async function ProductsPage({ searchParams }: { searchParams: SP 
                 ))}
               </nav>
             </div>
+            <Link href="/catalogues" className="flex items-center gap-3 rounded-2xl border border-brand-200 bg-brand-50 p-4 transition hover:border-brand-400 hover:shadow-md">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-brand-600 text-white">
+                <Download className="h-5 w-5" />
+              </span>
+              <span>
+                <span className="block font-bold text-brand-900">Download Catalogues</span>
+                <span className="block text-xs text-brand-700">Full product range in PDF</span>
+              </span>
+            </Link>
           </aside>
 
           <div className="min-w-0">

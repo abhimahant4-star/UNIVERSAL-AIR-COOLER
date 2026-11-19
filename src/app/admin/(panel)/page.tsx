@@ -1,15 +1,19 @@
 import Link from "next/link";
-import { ArrowRight, FolderTree, Images, MessageSquare, Package, Plus, Upload } from "lucide-react";
+import { ArrowRight, FileText, FolderTree, Images, MessageSquare, Package, Plus, Presentation, Upload } from "lucide-react";
 import StatusBadge from "@/components/admin/StatusBadge";
 import { prisma } from "@/lib/db";
+import { EXHIBITION_CATEGORY } from "@/lib/gallery";
 import { formatDate } from "@/lib/utils";
 
 export default async function Dashboard() {
-  const [products, activeProducts, categories, gallery, enquiries, newEnq, recent] = await Promise.all([
+  const exhibitionWhere = { category: { equals: EXHIBITION_CATEGORY, mode: "insensitive" as const } };
+  const [products, activeProducts, categories, installation, exhibition, catalogues, enquiries, newEnq, recent] = await Promise.all([
     prisma.product.count(),
     prisma.product.count({ where: { active: true } }),
     prisma.category.count(),
-    prisma.galleryImage.count(),
+    prisma.galleryImage.count({ where: { NOT: exhibitionWhere } }),
+    prisma.galleryImage.count({ where: exhibitionWhere }),
+    prisma.catalogue.count({ where: { ready: true, visible: true } }),
     prisma.enquiry.count(),
     prisma.enquiry.count({ where: { status: "NEW" } }),
     prisma.enquiry.findMany({ orderBy: { createdAt: "desc" }, take: 6, include: { product: { select: { name: true } } } }),
@@ -17,9 +21,11 @@ export default async function Dashboard() {
 
   const cards = [
     { label: "Products", value: products, sub: `${activeProducts} visible on website`, icon: Package, href: "/admin/products", color: "bg-brand-50 text-brand-600" },
-    { label: "Categories", value: categories, sub: "Product categories", icon: FolderTree, href: "/admin/categories", color: "bg-violet-50 text-violet-600" },
-    { label: "Gallery Images", value: gallery, sub: "Shown on Gallery page", icon: Images, href: "/admin/gallery", color: "bg-teal-50 text-teal-600" },
     { label: "Enquiries", value: enquiries, sub: `${newEnq} new`, icon: MessageSquare, href: "/admin/enquiries", color: "bg-amber-50 text-amber-600" },
+    { label: "Categories", value: categories, sub: "Product categories", icon: FolderTree, href: "/admin/categories", color: "bg-violet-50 text-violet-600" },
+    { label: "Product Installation", value: installation, sub: "Installation photos", icon: Images, href: "/admin/installation", color: "bg-teal-50 text-teal-600" },
+    { label: "Exhibition Participation", value: exhibition, sub: "Exhibition photos", icon: Presentation, href: "/admin/exhibitions", color: "bg-rose-50 text-rose-600" },
+    { label: "Catalogues", value: catalogues, sub: "PDFs customers can download", icon: FileText, href: "/admin/catalogues", color: "bg-sky-50 text-sky-600" },
   ];
 
   return (
@@ -33,13 +39,16 @@ export default async function Dashboard() {
           <Link href="/admin/products/new" className="btn-primary">
             <Plus className="h-4 w-4" /> Add Product
           </Link>
-          <Link href="/admin/gallery" className="btn-outline">
-            <Upload className="h-4 w-4" /> Upload Images
+          <Link href="/admin/installation" className="btn-outline">
+            <Upload className="h-4 w-4" /> Upload Photos
+          </Link>
+          <Link href="/admin/catalogues" className="btn-outline">
+            <FileText className="h-4 w-4" /> Upload Catalogue
           </Link>
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {cards.map((c) => (
           <Link key={c.label} href={c.href} className="rounded-2xl border border-slate-200 bg-white p-5 transition hover:shadow-md">
             <div className="flex items-center justify-between">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Droplets, IndianRupee, Phone, ShieldCheck, Truck, Wind, Zap } from "lucide-react";
+import { ArrowRight, BadgeCheck, Download, Droplets, IndianRupee, Phone, ShieldCheck, Truck, Wind, Zap } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Clients from "@/components/Clients";
 import { LogoMark, WhatsAppIcon } from "@/components/Icons";
@@ -246,6 +246,9 @@ export default async function HomePage() {
                 </a>
                 <Link href="/contact#enquiry" className="btn border border-white/60 px-6 py-3 text-white hover:bg-white/10">
                   Send Enquiry
+                </Link>
+                <Link href="/catalogues" className="btn border border-white/60 px-6 py-3 text-white hover:bg-white/10">
+                  <Download className="h-4 w-4" /> Download Catalogue
                 </Link>
               </div>
             </div>

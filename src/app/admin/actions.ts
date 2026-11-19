@@ -8,6 +8,7 @@ import { createSession, destroySession, requireAdmin } from "@/lib/auth";
 import { DEFAULT_SETTINGS, type SettingKey } from "@/lib/settings";
 import { deleteImage, saveImage, validFiles } from "@/lib/upload";
 import { oid, parseImages, slugify } from "@/lib/utils";
+import { EXHIBITION_CATEGORY, PHOTO_SECTIONS, isExhibitionCategory, type PhotoSection } from "@/lib/gallery";
 
 const str = (fd: FormData, k: string, max = 5000) => String(fd.get(k) ?? "").trim().slice(0, max);
 
@@ -189,14 +190,24 @@ export async function deleteCategory(fd: FormData) {
   back("/admin/categories", "msg", "Category deleted. Its products are now uncategorised.");
 }
 
-/* ---------------- Gallery ---------------- */
+/* ---------------- Photos: Product Installation & Exhibition Participation ---------------- */
+
+/** Which admin photo section a form came from, and the category its photos are stored under. */
+function photoSection(fd: FormData) {
+  const section: PhotoSection = fd.get("section") === "exhibition" ? "exhibition" : "installation";
+  const path = PHOTO_SECTIONS[section].adminPath;
+  // Exhibition photos always get the Exhibition category; installation photos never do (it would move them to the other page).
+  const raw = str(fd, "category", 60);
+  const category = section === "exhibition" ? EXHIBITION_CATEGORY : raw && !isExhibitionCategory(raw) ? raw : "Projects";
+  return { path, category };
+}
 
 export async function uploadGallery(fd: FormData) {
   await requireAdmin();
+  const { path, category } = photoSection(fd);
   const files = validFiles(fd.getAll("images"));
-  if (files.length === 0) back("/admin/gallery", "error", "Please choose at least one image.");
+  if (files.length === 0) back(path, "error", "Please choose at least one image.");
   const title = str(fd, "title", 150);
-  const category = str(fd, "category", 60) || "General";
   let n = 0;
   try {
     for (const f of files) {
@@ -206,33 +217,35 @@ export async function uploadGallery(fd: FormData) {
     }
   } catch (e) {
     refreshSite();
-    back("/admin/gallery", "error", `${n} uploaded. ${(e as Error).message}`);
+    back(path, "error", `${n} uploaded. ${(e as Error).message}`);
   }
   refreshSite();
-  back("/admin/gallery", "msg", `${n} image${n === 1 ? "" : "s"} uploaded.`);
+  back(path, "msg", `${n} photo${n === 1 ? "" : "s"} uploaded.`);
 }
 
 export async function updateGalleryImage(fd: FormData) {
   await requireAdmin();
-  const id = needId(fd, "/admin/gallery");
+  const { path, category } = photoSection(fd);
+  const id = needId(fd, path);
   await prisma.galleryImage.update({
     where: { id },
-    data: { title: str(fd, "title", 150), category: str(fd, "category", 60) || "General", sortOrder: Number(fd.get("sortOrder")) || 0 },
+    data: { title: str(fd, "title", 150), category, sortOrder: Number(fd.get("sortOrder")) || 0 },
   });
   refreshSite();
-  back("/admin/gallery", "msg", "Image details saved.");
+  back(path, "msg", "Photo details saved.");
 }
 
 export async function deleteGalleryImage(fd: FormData) {
   await requireAdmin();
-  const id = needId(fd, "/admin/gallery");
+  const { path } = photoSection(fd);
+  const id = needId(fd, path);
   const img = await prisma.galleryImage.findUnique({ where: { id } });
   if (img) {
     await prisma.galleryImage.delete({ where: { id } });
     await deleteImage(img.url);
   }
   refreshSite();
-  back("/admin/gallery", "msg", "Image deleted.");
+  back(path, "msg", "Photo deleted.");
 }
 
 /* ---------------- Enquiries ---------------- */

@@ -23,7 +23,7 @@ export default async function Footer({ s }: { s: SiteSettings }) {
         <div>
           <h3 className="text-sm font-bold tracking-wider text-white uppercase">Quick Links</h3>
           <ul className="mt-4 space-y-2.5 text-sm">
-            {NAV.map(({ href, label }) => (
+            {[...NAV, { href: "/catalogues", label: "Download Catalogues" }].map(({ href, label }) => (
               <li key={href}>
                 <Link href={href} className="hover:text-white">
                   {label}
