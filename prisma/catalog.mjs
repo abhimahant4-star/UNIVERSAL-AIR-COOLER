@@ -291,7 +291,7 @@ export const products = [
   },
   {
     name: "Industrial Mobile Fan – Plastic (with Spray Option)", category: "industrial-fans", featured: false,
-    images: ["mobile-plastic.jpg", "mobile-plastic-2.jpg", "mobile-plastic-spray.jpg"],
+    images: ["mobile-plastic-v2.jpg", "mobile-plastic-2.jpg", "mobile-plastic-spray.jpg"],
     shortDescription: "Lightweight plastic mobile fans, 50,000–74,000 m³/h, with optional 120 L spray tank.",
     description: "Plastic-frame industrial mobile fans that are simpler to assemble and smaller to transport. Spray models carry a 120-litre water tank for misting and extra cooling.",
     features: "Simple assembly\nReduced transport volume\nOptional 120 L spray water tank\n3 or 6 blades",
