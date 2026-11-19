@@ -10,7 +10,7 @@ export default function ProductImages({ images, name }: { images: string[]; name
     <div>
       <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={images[i]} alt={`${name} – image ${i + 1}`} className="aspect-square w-full object-contain" />
+        <img src={images[i]} alt={`${name} – image ${i + 1}`} className="block aspect-square w-full object-contain" />
         <LogoMark size="lg" />
       </div>
       {images.length > 1 && (

@@ -97,14 +97,14 @@ export default async function HomePage() {
       <section className="py-16 sm:py-24">
         <div className="container-x grid items-center gap-12 lg:grid-cols-2">
           <div className="grid grid-cols-2 gap-4">
-            <div className="relative">
+            <div className="relative self-start">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/king.jpg" alt="Universal King portable air cooler" width={900} height={900} loading="lazy" className="aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
+              <img src="/images/king.jpg" alt="Universal King portable air cooler" width={900} height={900} loading="lazy" className="block aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
               <LogoMark />
             </div>
-            <div className="relative mt-10">
+            <div className="relative mt-10 self-start">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/industrial.jpg" alt="Universal industrial air cooler" width={900} height={900} loading="lazy" className="aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
+              <img src="/images/industrial.jpg" alt="Universal industrial air cooler" width={900} height={900} loading="lazy" className="block aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
               <LogoMark />
             </div>
           </div>
