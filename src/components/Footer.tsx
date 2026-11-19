@@ -3,6 +3,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import type { SiteSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { telLink } from "@/lib/utils";
+import { NAV } from "@/lib/nav";
 import SocialLinks from "./SocialLinks";
 
 export default async function Footer({ s }: { s: SiteSettings }) {
@@ -22,13 +23,7 @@ export default async function Footer({ s }: { s: SiteSettings }) {
         <div>
           <h3 className="text-sm font-bold tracking-wider text-white uppercase">Quick Links</h3>
           <ul className="mt-4 space-y-2.5 text-sm">
-            {[
-              ["/", "Home"],
-              ["/about", "About Us"],
-              ["/products", "Our Products"],
-              ["/gallery", "Gallery"],
-              ["/contact", "Contact Us"],
-            ].map(([href, label]) => (
+            {NAV.map(({ href, label }) => (
               <li key={href}>
                 <Link href={href} className="hover:text-white">
                   {label}

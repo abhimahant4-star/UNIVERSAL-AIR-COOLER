@@ -32,6 +32,19 @@ export function YouTubeIcon({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
+/** Small company logo placed in the corner of product photos. The parent must be `relative`. */
+export function LogoMark({ size = "sm" }: { size?: "sm" | "lg" }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`pointer-events-none absolute right-2.5 bottom-2.5 rounded-md bg-white/90 shadow-sm ring-1 ring-slate-200/70 ${size === "lg" ? "px-2 py-1.5 sm:right-4 sm:bottom-4" : "px-1.5 py-1"}`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo-mark.webp" alt="" width={160} height={86} className={size === "lg" ? "h-9 w-auto sm:h-11" : "h-6 w-auto sm:h-7"} />
+    </span>
+  );
+}
+
 /** Shown when a product has no uploaded photo yet: the company logo on white. */
 export function CoolerArt({ className = "" }: { className?: string; tone?: string }) {
   return (

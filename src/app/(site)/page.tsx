@@ -2,7 +2,9 @@ import Link from "next/link";
 import { ArrowRight, BadgeCheck, Droplets, IndianRupee, Phone, ShieldCheck, Truck, Wind, Zap } from "lucide-react";
 import ProductCard from "@/components/ProductCard";
 import Clients from "@/components/Clients";
-import { WhatsAppIcon } from "@/components/Icons";
+import { LogoMark, WhatsAppIcon } from "@/components/Icons";
+import CountUp from "@/components/CountUp";
+import { installationPhotos } from "@/lib/gallery";
 import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { lines, telLink, whatsappLink } from "@/lib/utils";
@@ -12,8 +14,13 @@ export default async function HomePage() {
   const [featured, categories, gallery] = await Promise.all([
     prisma.product.findMany({ where: { active: true, featured: true }, include: { category: true }, orderBy: { updatedAt: "desc" }, take: 6 }),
     prisma.category.findMany({ where: { products: { some: { active: true } } }, orderBy: { sortOrder: "asc" }, include: { _count: { select: { products: { where: { active: true } } } } } }),
-    prisma.galleryImage.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }], take: 4 }),
+    installationPhotos(4),
   ]);
+
+  // "... Since 1980" is shown on its own smaller line under the main heading
+  const sinceMatch = s.heroTitle.match(/^(.*?)\s*((?:since|established|estd\.?)\s+\d{4})\s*$/i);
+  const heroMain = sinceMatch ? sinceMatch[1] : s.heroTitle;
+  const heroSince = sinceMatch ? sinceMatch[2] : "";
 
   const stats = [
     { value: s.yearsExperience, label: "Years of Experience" },
@@ -37,12 +44,15 @@ export default async function HomePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-brand-950 via-brand-900 to-brand-700 text-white">
         <div className="pointer-events-none absolute -top-32 -left-24 h-96 w-96 rounded-full bg-ice/20 blur-3xl" />
         <div className="pointer-events-none absolute right-0 bottom-0 h-80 w-80 rounded-full bg-brand-400/20 blur-3xl" />
-        <div className="container-x relative grid items-center gap-12 py-16 sm:py-24 lg:grid-cols-2">
-          <div>
+        <div className="container-x relative grid items-center gap-12 pt-8 pb-16 sm:py-24 lg:grid-cols-2">
+          <div className="order-2 lg:order-1">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold tracking-wide text-brand-100">
               <BadgeCheck className="h-4 w-4 text-ice" /> {s.tagline}
             </span>
-            <h1 className="mt-6 text-4xl leading-tight font-extrabold text-white sm:text-5xl lg:text-6xl">{s.heroTitle}</h1>
+            <h1 className="mt-6 text-4xl leading-tight font-extrabold text-white sm:text-5xl lg:text-6xl">
+              {heroMain}
+              {heroSince && <span className="mt-2 block text-xl font-bold tracking-wide text-ice sm:text-2xl lg:text-3xl">{heroSince}</span>}
+            </h1>
             <p className="mt-6 max-w-xl text-base text-brand-100 sm:text-lg">{s.heroSubtitle}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/products" className="btn-light px-6 py-3">
@@ -56,14 +66,15 @@ export default async function HomePage() {
               </a>
             </div>
           </div>
-          <div className="relative mx-auto w-full max-w-md lg:max-w-lg">
+          {/* On phones the product photo comes first */}
+          <div className="relative order-1 mx-auto w-full max-w-md lg:order-2 lg:max-w-lg">
             <div className="absolute inset-6 rounded-[2.5rem] bg-ice/30 blur-2xl" />
             <div className="relative overflow-hidden rounded-[2.5rem] border border-white/20 bg-white shadow-2xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/images/hero-products.jpg" alt={`${s.siteName} industrial air coolers, duct coolers and portable coolers`} width={1296} height={1400} fetchPriority="high" className="h-auto w-full" />
             </div>
             <div className="absolute -bottom-5 -left-3 rounded-2xl bg-white px-5 py-3 text-slate-900 shadow-xl sm:-left-8">
-              <p className="text-2xl font-extrabold text-brand-700">{s.happyCustomers}</p>
+              <CountUp value={s.happyCustomers} className="block text-2xl font-extrabold text-brand-700 tabular-nums" />
               <p className="text-xs font-medium text-slate-500">Happy customers</p>
             </div>
           </div>
@@ -75,7 +86,7 @@ export default async function HomePage() {
         <div className="container-x grid grid-cols-2 gap-6 py-10 md:grid-cols-4">
           {stats.map((st) => (
             <div key={st.label} className="text-center">
-              <p className="text-3xl font-extrabold text-brand-700 sm:text-4xl">{st.value}</p>
+              <CountUp value={st.value} className="block text-3xl font-extrabold text-brand-700 tabular-nums sm:text-4xl" />
               <p className="mt-1 text-sm text-slate-500">{st.label}</p>
             </div>
           ))}
@@ -86,10 +97,16 @@ export default async function HomePage() {
       <section className="py-16 sm:py-24">
         <div className="container-x grid items-center gap-12 lg:grid-cols-2">
           <div className="grid grid-cols-2 gap-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/king.jpg" alt="Universal King portable air cooler" width={900} height={900} loading="lazy" className="aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/images/industrial.jpg" alt="Universal industrial air cooler" width={900} height={900} loading="lazy" className="mt-10 aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/king.jpg" alt="Universal King portable air cooler" width={900} height={900} loading="lazy" className="aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
+              <LogoMark />
+            </div>
+            <div className="relative mt-10">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/industrial.jpg" alt="Universal industrial air cooler" width={900} height={900} loading="lazy" className="aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
+              <LogoMark />
+            </div>
           </div>
           <div>
             <p className="eyebrow">About {s.siteName}</p>
@@ -188,24 +205,24 @@ export default async function HomePage() {
 
       <Clients list={s.clients} />
 
-      {/* Gallery teaser */}
+      {/* Product installation teaser */}
       {gallery.length > 0 && (
         <section className="py-16 sm:py-24">
           <div className="container-x">
             <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
               <div>
-                <p className="eyebrow">Gallery</p>
-                <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">A Look at Our Work</h2>
+                <p className="eyebrow">Product Installation</p>
+                <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Our Coolers at Work</h2>
               </div>
-              <Link href="/gallery" className="btn-outline">
-                View Gallery <ArrowRight className="h-4 w-4" />
+              <Link href="/product-installation" className="btn-outline">
+                View Installations <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
             <div className="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4">
               {gallery.map((g) => (
-                <Link key={g.id} href="/gallery" className="overflow-hidden rounded-2xl bg-slate-100">
+                <Link key={g.id} href="/product-installation" className="overflow-hidden rounded-2xl bg-slate-100">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.url} alt={g.title || "Gallery image"} loading="lazy" className="aspect-[4/3] h-full w-full object-cover transition duration-500 hover:scale-105" />
+                  <img src={g.url} alt={g.title || "Installation photo"} loading="lazy" className="aspect-[4/3] h-full w-full object-cover transition duration-500 hover:scale-105" />
                 </Link>
               ))}
             </div>

@@ -4,14 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, Phone, X } from "lucide-react";
-
-const NAV = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About Us" },
-  { href: "/products", label: "Our Products" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/contact", label: "Contact Us" },
-];
+import { NAV } from "@/lib/nav";
 
 export default function Header({ siteName, phone, tel }: { siteName: string; phone: string; tel: string }) {
   const pathname = usePathname();
@@ -21,23 +14,23 @@ export default function Header({ siteName, phone, tel }: { siteName: string; pho
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur">
-      <div className="container-x flex h-16 items-center justify-between gap-4 lg:h-20">
-        <Link href="/" className="flex min-w-0 items-center gap-3" aria-label={`${siteName} home`}>
+    <header className="sticky top-0 z-40 border-b border-slate-200/70 bg-white/95 backdrop-blur">
+      <div className="container-x flex h-[72px] items-center justify-between gap-3 lg:h-24">
+        <Link href="/" className="flex min-w-0 shrink-0 items-center gap-3" aria-label={`${siteName} home`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo-light-sm.webp" alt={`${siteName} logo`} width={520} height={325} className="h-12 w-auto shrink-0 lg:h-16" />
-          <span className="hidden leading-tight sm:block">
+          <img src="/logo-light-sm.webp" alt={`${siteName} logo`} width={600} height={321} className="h-14 w-auto shrink-0 lg:h-[76px]" />
+          <span className="hidden leading-tight sm:block xl:hidden 2xl:block">
             <span className="block text-lg font-extrabold tracking-tight whitespace-nowrap text-slate-900">{siteName.toUpperCase()}</span>
             <span className="block text-[11px] font-medium text-slate-500">An ISO 9001:2015 Company</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Main">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className={`rounded-full px-3 py-2 text-sm font-semibold whitespace-nowrap transition xl:px-4 ${
+              className={`rounded-full px-3 py-2 text-[13.5px] font-semibold whitespace-nowrap transition ${
                 isActive(n.href) ? "bg-brand-50 text-brand-700" : "text-slate-700 hover:text-brand-700"
               }`}
             >
@@ -46,27 +39,29 @@ export default function Header({ siteName, phone, tel }: { siteName: string; pho
           ))}
         </nav>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <a href={tel} className="hidden items-center gap-2 text-sm font-semibold whitespace-nowrap text-slate-800 hover:text-brand-700 xl:flex">
-            <Phone className="h-4 w-4 text-brand-600" /> {phone}
-          </a>
+        <div className="hidden items-center gap-3 xl:flex">
           <Link href="/contact#enquiry" className="btn-primary whitespace-nowrap">
             Get a Quote
           </Link>
         </div>
 
-        <button
-          className="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 lg:hidden"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2 xl:hidden">
+          <a href={tel} className="hidden items-center gap-2 text-sm font-semibold whitespace-nowrap text-slate-800 hover:text-brand-700 md:flex">
+            <Phone className="h-4 w-4 text-brand-600" /> {phone}
+          </a>
+          <button
+            className="grid h-11 w-11 place-items-center rounded-lg border border-slate-200"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
       {open && (
-        <div className="border-t border-slate-200 bg-white lg:hidden">
+        <div className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-slate-200 bg-white xl:hidden">
           <nav className="container-x flex flex-col py-3" aria-label="Mobile">
             {NAV.map((n) => (
               <Link

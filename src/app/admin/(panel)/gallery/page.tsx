@@ -1,17 +1,20 @@
 import { Upload } from "lucide-react";
 import { ConfirmButton, ImagePicker, SubmitButton } from "@/components/admin/ui";
 import { prisma } from "@/lib/db";
+import { EXHIBITION_CATEGORY } from "@/lib/gallery";
 import { deleteGalleryImage, updateGalleryImage, uploadGallery } from "../../actions";
 
 export default async function AdminGallery() {
   const images = await prisma.galleryImage.findMany({ orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }] });
-  const categories = Array.from(new Set(["Products", "Showroom", "Projects", "Business", "Events", ...images.map((i) => i.category)]));
+  const categories = Array.from(new Set(["Projects", EXHIBITION_CATEGORY, "Products", "Ducting", ...images.map((i) => i.category)]));
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-extrabold">Gallery</h1>
-        <p className="text-sm text-slate-500">Upload product and business photos for the Gallery page.</p>
+        <p className="text-sm text-slate-500">
+          Photos with the category <strong>{EXHIBITION_CATEGORY}</strong> appear on the Exhibition Participation page. All other photos appear on the Product Installation page.
+        </p>
       </div>
 
       <form action={uploadGallery} className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">

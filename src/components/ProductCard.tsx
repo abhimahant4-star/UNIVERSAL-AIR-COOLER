@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { CoolerArt } from "./Icons";
+import { CoolerArt, LogoMark } from "./Icons";
 import { formatPrice, parseImages } from "@/lib/utils";
 
 type P = {
@@ -30,6 +30,7 @@ export default function ProductCard({ p }: { p: P }) {
         {p.category && (
           <span className="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-slate-700 backdrop-blur">{p.category.name}</span>
         )}
+        {img && <LogoMark />}
       </Link>
       <div className="flex flex-1 flex-col p-5">
         <h3 className="text-lg font-bold">
