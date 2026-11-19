@@ -1,7 +1,7 @@
 import { slugify } from "./utils";
 
 /**
- * Logos for "Our Prestigious Customers", taken from each company's own website (files in public/clients).
+ * Logos for "Our Prestigious Customers" (files in public/clients): from company websites, plus four supplied by the client.
  * Looked up by the customer's name as typed in Admin → Website Settings, so spelling variants still match.
  * `dark: true` = the logo has white lettering, so it is shown on a dark tile.
  */
@@ -18,6 +18,14 @@ const LOGOS: Record<string, { src: string; dark?: boolean }> = {
   "metro-tyres": { src: "/clients/metro-tyres.webp", dark: true },
   "dainik-savera": { src: "/clients/dainik-savera.webp" },
   baum: { src: "/clients/baum-forge.webp" },
+  jujhar: { src: "/clients/jujhar-group.webp" },
+  "sheetal-fibre": { src: "/clients/sheetal-fibres.webp" },
+  "shital-fiber": { src: "/clients/sheetal-fibres.webp" },
+  "sheetal-fiber": { src: "/clients/sheetal-fibres.webp" },
+  "shital-fibre": { src: "/clients/sheetal-fibres.webp" },
+  juneja: { src: "/clients/juneja-forging.webp" },
+  "varindra-tool": { src: "/clients/varindra-tools.webp" },
+  "varindera-tool": { src: "/clients/varindra-tools.webp" },
 };
 
 /** Words ignored when matching, so "Haveli Restaurant", "Aarti Steels" or "Bonn Group" still find their logo. */
