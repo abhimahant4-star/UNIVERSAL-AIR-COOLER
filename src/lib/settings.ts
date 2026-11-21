@@ -1,6 +1,9 @@
 import { cache } from "react";
 import { prisma } from "./db";
 
+/** Factory location on Google Maps (Bajra Road, Ludhiana), used for directions and search engines. */
+export const FACTORY_LOCATION = { lat: 30.953782, lng: 75.889849 };
+
 export const DEFAULT_SETTINGS = {
   siteName: "Universal Air Cooler",
   tagline: "The Leaders in Evaporative Air Cooling Since 1980",
@@ -11,7 +14,8 @@ export const DEFAULT_SETTINGS = {
   address:
     "Regd. Office: Opp. Bank of Baroda, Shingar Cinema Road, Ludhiana-141008 (Punjab)\nFactory: Bajra Road, Rahon Road, Bajra, Ludhiana-141007 (Punjab)",
   businessHours: "Mon - Sat: 9:30 AM - 8:00 PM",
-  mapEmbedUrl: "https://www.google.com/maps?q=Bajra+Road,+Rahon+Road,+Ludhiana,+Punjab+141007&output=embed",
+  // Factory, Bajra Road, Ludhiana: 30°57'13.6"N 75°53'23.5"E
+  mapEmbedUrl: "https://www.google.com/maps?q=30.953782,75.889849&z=17&output=embed",
   heroTitle: "Complete Evaporative Cooling Solutions Since 1980",
   heroSubtitle:
     "Manufacturer of evaporative air cooling systems, desert and industrial coolers, air washers, honeycomb pads, ducting, ventilation systems and more, for industries, institutions and homes.",
@@ -22,7 +26,7 @@ export const DEFAULT_SETTINGS = {
   productRange:
     "Axial Fan Series Evaporative Air Cooling Systems\nDesert Coolers\nPortable Coolers\nDesigner Coolers\nGalvanized Steel Coolers\nPlastic Coolers\nIndustrial Coolers\nAir Washer Systems with Cellulose (Honeycomb) Pads\nBlower Units\nCellulose (Honeycomb) Pads\nAll Types of Ducting\nExhaust Fans & Ventilation Systems\nWater Coolers & Industrial Chillers\nPedestal Fans",
   industries:
-    "Industries\nHosiery Units\nTextile Mills\nGarment Factories\nHospitals\nSchools\nCanteens\nHotels\nRestaurants\nAgriculture\nHomes",
+    "Industries\nForging Units\nHosiery Units\nTextile Mills\nGarment Factories\nHospitals\nSchools\nCanteens\nHotels\nRestaurants\nAgriculture\nHomes",
   clients:
     "Livguard\nSportking\nMonte Carlo\nHaveli Restaurant\nSML Isuzu\nHero Motors\nBonn\nAarti Steel\nMetro Tyres\nJujhar Group\nBaum Forge\nHR Forging\nDainik Savera\nSheetal Fibres\nJuneja Forging\nVarindra Tools",
   mission:

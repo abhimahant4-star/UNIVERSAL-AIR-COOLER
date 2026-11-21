@@ -4,7 +4,7 @@ import PageHero from "@/components/PageHero";
 import EnquiryForm from "@/components/EnquiryForm";
 import { WhatsAppIcon } from "@/components/Icons";
 import SocialLinks, { socialList } from "@/components/SocialLinks";
-import { getSettings } from "@/lib/settings";
+import { FACTORY_LOCATION, getSettings } from "@/lib/settings";
 import { telLink, whatsappLink } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -96,6 +96,14 @@ export default async function ContactPage() {
                 <p className="p-8 text-sm text-slate-500">Map not configured.</p>
               )}
             </div>
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${FACTORY_LOCATION.lat},${FACTORY_LOCATION.lng}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary justify-center"
+            >
+              <MapPin className="h-4 w-4" /> Get Directions to Our Factory
+            </a>
           </div>
         </div>
       </section>

@@ -9,6 +9,40 @@ import { prisma } from "@/lib/db";
 import { getSettings } from "@/lib/settings";
 import { lines, telLink, whatsappLink } from "@/lib/utils";
 
+/** The five main products from the Star Universal catalogue (specs from the catalogue). */
+const MAIN_PRODUCTS = [
+  {
+    title: "Industrial Duct Air Cooler",
+    img: "/images/main-duct-cooler.jpg",
+    href: "/products?category=industrial-coolers",
+    points: ["18,000–40,000 CMH air flow", "Air throw up to 100 ft", "Ducted cooling for large areas"],
+  },
+  {
+    title: "Industrial Air Cooler",
+    img: "/images/main-industrial-cooler.jpg",
+    href: "/products?category=evaporative-air-cooling-systems",
+    points: ["Front, top & bottom discharge", "Covers 1,500–3,500 sq ft", "24\" and 28\" axial fans"],
+  },
+  {
+    title: "Commercial Air Cooler 180 L",
+    img: "/images/grey-cooler.jpg",
+    href: "/products?category=commercial-coolers",
+    points: ["18,000 CMH air flow", "30\" fan, 3-speed motor", "180 litre water tank"],
+  },
+  {
+    title: "Industrial Mobile Fan",
+    img: "/images/main-mobile-fan.jpg",
+    href: "/products?category=industrial-fans",
+    points: ["Heavy-duty drum fan on wheels", "Low cost, energy saving", "For workshops & large halls"],
+  },
+  {
+    title: "Exhaust Fans",
+    img: "/images/main-exhaust-fan.jpg",
+    href: "/products?category=exhaust-fans-ventilation",
+    points: ["Box and cone models", "13,000–44,500 m³/h air flow", "650–1,260 mm blades"],
+  },
+];
+
 export default async function HomePage() {
   const s = await getSettings();
   const [featured, categories, gallery] = await Promise.all([
@@ -67,11 +101,19 @@ export default async function HomePage() {
             </div>
           </div>
           {/* On phones the product photo comes first */}
-          <div className="relative order-1 mx-auto w-full max-w-md lg:order-2 lg:max-w-lg">
+          <div className="relative order-1 mx-auto w-full max-w-xl lg:order-2 lg:max-w-none">
             <div className="absolute inset-6 rounded-[2.5rem] bg-ice/30 blur-2xl" />
-            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/20 bg-white shadow-2xl">
+            <div className="relative overflow-hidden rounded-[2rem] border border-white/20 shadow-2xl">
+              {/* Product montage from the Star Universal catalogue */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/hero-products.jpg" alt={`${s.siteName} industrial air coolers, duct coolers and portable coolers`} width={1296} height={1400} fetchPriority="high" className="h-auto w-full" />
+              <img
+                src="/images/hero-catalogue.jpg"
+                alt={`${s.siteName} industrial, commercial and duct air coolers`}
+                width={1600}
+                height={1040}
+                fetchPriority="high"
+                className="h-auto w-full"
+              />
             </div>
             <div className="absolute -bottom-5 -left-3 rounded-2xl bg-white px-5 py-3 text-slate-900 shadow-xl sm:-left-8">
               <CountUp value={s.happyCustomers} className="block text-2xl font-extrabold text-brand-700 tabular-nums" />
@@ -90,6 +132,53 @@ export default async function HomePage() {
               <p className="mt-1 text-sm text-slate-500">{st.label}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Main products (from the Star Universal catalogue) */}
+      <section className="bg-slate-50 py-16 sm:py-20">
+        <div className="container-x">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="eyebrow">Our Main Products</p>
+            <h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Industrial, Commercial &amp; Duct Cooling Solutions</h2>
+            <p className="mt-3 text-slate-600">Built for factories, warehouses, workshops and commercial spaces, and backed by decades of manufacturing experience.</p>
+          </div>
+          <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {MAIN_PRODUCTS.map((m) => (
+              <li key={m.title} className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-brand-300 hover:shadow-xl hover:shadow-slate-200">
+                <Link href={m.href} className="relative block">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={m.img} alt={m.title} width={800} height={800} loading="lazy" className="block aspect-square w-full object-contain p-4 transition duration-500 group-hover:scale-105" />
+                  <LogoMark />
+                </Link>
+                <div className="flex flex-1 flex-col border-t border-slate-100 p-5">
+                  <h3 className="text-lg font-bold">
+                    <Link href={m.href} className="hover:text-brand-700">
+                      {m.title}
+                    </Link>
+                  </h3>
+                  <ul className="mt-3 space-y-1.5 text-sm text-slate-600">
+                    {m.points.map((pt) => (
+                      <li key={pt} className="flex gap-2">
+                        <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" /> {pt}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link href={m.href} className="mt-auto flex items-center gap-1 pt-5 text-sm font-semibold text-brand-700 hover:text-brand-900">
+                    View range <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            <Link href="/products" className="btn-primary">
+              View All Products <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link href="/catalogues" className="btn-outline">
+              <Download className="h-4 w-4" /> Download Catalogue
+            </Link>
+          </div>
         </div>
       </section>
 

@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { WhatsAppIcon } from "@/components/Icons";
-import { getSettings } from "@/lib/settings";
+import { FACTORY_LOCATION, getSettings } from "@/lib/settings";
 import { siteUrl, telLink, whatsappLink } from "@/lib/utils";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -15,11 +15,13 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     description: s.aboutShort,
     url: siteUrl(),
     logo: `${siteUrl()}/logo.webp`,
-    image: `${siteUrl()}/images/hero-products.jpg`,
+    image: `${siteUrl()}/images/hero-catalogue.jpg`,
     telephone: [s.phone, s.phone2].filter(Boolean),
     email: s.email,
     foundingDate: "1980",
     address: { "@type": "PostalAddress", streetAddress: s.address.replace(/\s*\n\s*/g, ", "), addressCountry: "IN" },
+    geo: { "@type": "GeoCoordinates", latitude: FACTORY_LOCATION.lat, longitude: FACTORY_LOCATION.lng },
+    hasMap: `https://www.google.com/maps?q=${FACTORY_LOCATION.lat},${FACTORY_LOCATION.lng}`,
     openingHours: s.businessHours,
     sameAs: [s.facebook, s.instagram, s.youtube].filter(Boolean),
   };
