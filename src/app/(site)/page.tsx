@@ -99,8 +99,8 @@ export default async function HomePage() {
           <div className="grid grid-cols-2 gap-4">
             <div className="relative self-start">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/king.jpg" alt="Universal King portable air cooler" width={900} height={900} loading="lazy" className="block aspect-square w-full rounded-3xl border border-slate-200 bg-white object-contain p-3 shadow-sm" />
-              <LogoMark />
+              {/* The Universal logo is printed on this cooler, so no corner logo here */}
+              <img src="/images/grey-cooler.jpg" alt="Star Universal commercial air cooler" width={900} height={988} loading="lazy" className="block h-auto w-full rounded-3xl border border-slate-200 bg-white shadow-sm" />
             </div>
             <div className="relative mt-10 self-start">
               {/* eslint-disable-next-line @next/next/no-img-element */}
