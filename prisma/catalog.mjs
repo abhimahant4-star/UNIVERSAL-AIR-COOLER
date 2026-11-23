@@ -81,7 +81,7 @@ export const products = [
   },
   {
     name: "Star Universal Commercial Cooler 150L", category: "commercial-coolers", featured: true,
-    images: ["comm150-a.jpg", "comm150-b.jpg"],
+    images: ["comm150-a-w.jpg", "comm150-b-w.jpg"],
     shortDescription: '150-litre commercial cooler with 30" axial fan and 18,000 CMH air flow.',
     description: "A heavy-duty 150-litre commercial cooler with a 30-inch axial fan and large 1100 × 1150 mm cooling pad. Single-phase, 3-speed motor for shops, halls, workshops and factories.",
     features: `30" axial fan\n18,000 CMH air flow\n150-litre water tank\nSingle-phase 3-speed motor\nLarge 100 mm cooling pad\n${COMMON}`,
@@ -93,6 +93,26 @@ export const products = [
       "Air Flow: 18,000 CMH / 10,594 CFM",
       "Cooling Pad Size: 1100 × 100 × 1150 mm",
       "Water Tank: 150 L",
+      "Product Dimensions: 1131 × 620 × 1642 mm",
+      "Gross Weight: 55 kg",
+      "Auto Louvers: Not provided",
+    ].join("\n"),
+  },
+  {
+    // Same specifications as the 150L model, with a 180-litre tank
+    name: "Star Universal Commercial Cooler 180L", category: "commercial-coolers", featured: false,
+    images: ["comm180-a-w.jpg"],
+    shortDescription: '180-litre commercial cooler with 30" axial fan and 18,000 CMH air flow.',
+    description: "A heavy-duty 180-litre commercial cooler with a 30-inch axial fan and large 1100 × 1150 mm cooling pad. Single-phase, 3-speed motor for shops, halls, workshops and factories.",
+    features: `30" axial fan\n18,000 CMH air flow\n180-litre water tank\nSingle-phase 3-speed motor\nLarge 100 mm cooling pad\n${COMMON}`,
+    specs: [
+      "Motor Type: Single phase, 3 speed",
+      "RPM / Wattage / HP: 950 RPM / 550 W / 0.75 HP",
+      'Fan Type: Axial fan, 30"',
+      "Fan Noise: 62 dB",
+      "Air Flow: 18,000 CMH / 10,594 CFM",
+      "Cooling Pad Size: 1100 × 100 × 1150 mm",
+      "Water Tank: 180 L",
       "Product Dimensions: 1131 × 620 × 1642 mm",
       "Gross Weight: 55 kg",
       "Auto Louvers: Not provided",
@@ -189,7 +209,7 @@ export const products = [
   /* ---------- Exhaust fans & ventilation ---------- */
   {
     name: "Star Universal Industrial Exhaust Fan", category: "exhaust-fans-ventilation", featured: true,
-    images: ["uexh-box.jpg", "uexh-cone.jpg"],
+    images: ["uexh-box-w.jpg", "uexh-cone-w.jpg"],
     shortDescription: "Industrial exhaust fans from 13,000 to 44,500 m³/h, 370 W to 1100 W.",
     description: "Star Universal industrial exhaust fans remove heat, fumes and stale air from factories, poultry and dairy sheds, kitchens and warehouses. Low cost, energy saving and eco friendly, with full technical support. Available in box and cone designs.",
     features: "Low running cost\nEnergy saving\nEco friendly\nTechnical support\n220 V – 380 V operation",
@@ -311,7 +331,7 @@ export const products = [
   /* ---------- Ducting ---------- */
   {
     name: "PP Plastic Ventilation Duct System", category: "ducting", featured: false,
-    images: ["duct-system.jpg", "duct-straight.jpg", "duct-elbow.jpg", "duct-tee.jpg"],
+    images: ["duct-system-w.jpg", "duct-straight.jpg", "duct-elbow.jpg", "duct-tee.jpg"],
     shortDescription: "Modular plastic ducts, elbows, tee junctions and fittings for evaporative cooler installations.",
     description: "A complete modular PP plastic duct system for evaporative air coolers: straight ducts, elbows, tee junctions, taper joints, covers, joints and adapters. We specialise in all types of ducting and design the layout for each site. Flame-retardant versions can be customised.",
     features: "Plastic, anti-corrosion\nShock absorption, low noise\nLarge pipe diameter for smooth airflow\nSimple, quick installation\nDisassembles and stacks for low transport cost\nFlame-retardant version available",
@@ -410,6 +430,56 @@ export const products = [
       "|HN-III|Integrated frequency speed controller|220 V / 380 V",
       "|HN-IV|Separate frequency speed controller|220 V / 380 V",
     ].join("\n"),
+  },
+
+  /* ---------- Individual accessories (Industrial Air Conditioning Fan catalogue, pages 47–49) ---------- */
+  {
+    name: "Big Air Diffuser (Ø250 mm)", category: "ducting", featured: false,
+    images: ["big-diffuser.jpg"],
+    shortDescription: "Round jet air diffuser for ducted evaporative cooling, 150 mm intake and Ø250 mm body.",
+    description: "A round jet-type air diffuser for ducted cooling and ventilation systems. The swivelling nozzle lets you direct the stream of cool air exactly where it is needed.",
+    features: "Swivelling jet nozzle to direct the air stream\nFor ducted evaporative cooling and ventilation\nNeat round design for ceiling or duct mounting",
+    specs: ["Intake: 150 mm", "Outlet: 105 mm", "Overall Size: Ø 250 mm"].join("\n"),
+  },
+  {
+    name: "Automatic Swing Vent (650 × 450 mm)", category: "ducting", featured: false,
+    images: ["swing-vent.jpg"],
+    shortDescription: "Motorised swing louvre vent that spreads cool air from side to side, 650 × 450 mm.",
+    description: "A motorised louvre vent for cooler and duct outlets. The louvres swing automatically to spread cool air evenly across the room.",
+    features: "Motorised louvres swing automatically\nSpreads cool air evenly across the room\nFor cooler and duct outlets",
+    specs: ["Size: 650 × 450 mm"].join("\n"),
+  },
+  {
+    name: "PP + Fibreglass Fan Blade (680 mm)", category: "spare-parts-accessories", featured: false,
+    images: ["fan-blade-red.jpg"],
+    shortDescription: "Heavy-duty 680 mm fan blade for 35,000 m³/h industrial air coolers with 3.0 kW motors.",
+    description: "A heavy-duty fan blade in PP + fibreglass for large industrial air coolers, with an aluminium hub and a Ø28 mm axle hole.",
+    features: "Strong PP + fibreglass blades\nAluminium hub\nFor 35,000 m³/h industrial coolers",
+    specs: ["Air Flow: 35,000 m³/h", "Motor Power: 3.0 kW", "Material: PP + fibreglass", "Axle Hole: Ø 28 mm", "Size: 680 mm"].join("\n"),
+  },
+  {
+    name: "Manual Drain Valve", category: "spare-parts-accessories", featured: false,
+    images: ["manual-drain-valve.jpg"],
+    shortDescription: "Lever-operated ball valve for draining the cooler's water tank.",
+    description: "A lever-operated ball valve for quickly draining the water tank of industrial and commercial air coolers during cleaning and maintenance.",
+    features: "Quarter-turn lever for quick draining\nFor industrial and commercial cooler tanks\nEasy to fit and maintain",
+    specs: "",
+  },
+  {
+    name: "Automatic Drain Valve", category: "spare-parts-accessories", featured: false,
+    images: ["auto-drain-valve.jpg"],
+    shortDescription: "Automatic drain valve that empties the cooler's water tank without manual work.",
+    description: "An automatic drain valve for industrial evaporative air coolers. It drains the water tank on its own, helping keep the tank clean with less maintenance.",
+    features: "Drains the water tank automatically\nHelps keep the tank clean\nFor industrial evaporative coolers",
+    specs: "",
+  },
+  {
+    name: "Double Side Grill (22 × 12 inch)", category: "ducting", featured: false,
+    images: ["double-side-grill.jpg"],
+    shortDescription: "Double side air grill for cooler ducting, 22 × 12 inch, with two adjustable louvre sections.",
+    description: "A double side grill for cooler duct outlets. Its two louvre sections spread the cool air to both sides, and the louvres can be adjusted to direct the air flow.",
+    features: "Two louvre sections spread air to both sides\nAdjustable louvres with thumbwheel control\nFor cooler duct outlets",
+    specs: ["Size: 22 × 12 inch (approx. 560 × 305 mm)", "Use: Cooler ducting outlet"].join("\n"),
   },
 ];
 
