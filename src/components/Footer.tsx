@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import type { SiteSettings } from "@/lib/settings";
+import { directionsUrl, mapSrc, type SiteSettings } from "@/lib/settings";
 import { prisma } from "@/lib/db";
 import { telLink } from "@/lib/utils";
 import { NAV } from "@/lib/nav";
@@ -9,6 +9,7 @@ import SocialLinks from "./SocialLinks";
 export default async function Footer({ s }: { s: SiteSettings }) {
   const categories = await prisma.category.findMany({ where: { products: { some: { active: true } } }, orderBy: { sortOrder: "asc" }, take: 6 });
   const phones = [s.phone, s.phone2].filter(Boolean);
+  const map = mapSrc(s.mapEmbedUrl);
 
   return (
     <footer className="bg-brand-950 text-slate-300">
@@ -79,6 +80,19 @@ export default async function Footer({ s }: { s: SiteSettings }) {
           </ul>
         </div>
       </div>
+      {map && (
+        <div className="container-x pb-12">
+          <div className="flex flex-wrap items-end justify-between gap-3">
+            <h3 className="text-sm font-bold tracking-wider text-white uppercase">Find Our Factory</h3>
+            <a href={directionsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-ice hover:text-white">
+              <MapPin className="h-4 w-4" /> Get Directions
+            </a>
+          </div>
+          <div className="mt-4 overflow-hidden rounded-2xl ring-1 ring-white/15">
+            <iframe src={map} title={`${s.siteName} factory location on Google Maps`} className="block h-64 w-full sm:h-80" loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
+          </div>
+        </div>
+      )}
       <div className="border-t border-white/10">
         <div className="container-x flex flex-col items-center justify-between gap-2 py-5 text-xs text-slate-500 sm:flex-row">
           <p>

@@ -2,7 +2,17 @@ import { cache } from "react";
 import { prisma } from "./db";
 
 /** Factory location on Google Maps (Bajra Road, Ludhiana), used for directions and search engines. */
-export const FACTORY_LOCATION = { lat: 30.953782, lng: 75.889849 };
+// 30°57'13.6"N 75°53'23.5"E
+export const FACTORY_LOCATION = { lat: 30.953778, lng: 75.889861 };
+
+/** Accepts either a plain embed URL or a full <iframe> snippet pasted from Google Maps. */
+export function mapSrc(value: string) {
+  const m = value.match(/src="([^"]+)"/);
+  const url = (m ? m[1] : value).trim();
+  return /^https:\/\/(www\.)?google\.[a-z.]+\/maps/.test(url) ? url : null;
+}
+
+export const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${FACTORY_LOCATION.lat},${FACTORY_LOCATION.lng}`;
 
 export const DEFAULT_SETTINGS = {
   siteName: "Universal Air Cooler",
@@ -10,12 +20,13 @@ export const DEFAULT_SETTINGS = {
   phone: "+91 98148 29137",
   phone2: "+91 98881 44204",
   whatsapp: "919814829137",
-  email: "sstradingcom@yahoo.com",
+  email: "universalaircooler4@gmail.com",
   address:
     "Regd. Office: Opp. Bank of Baroda, Shingar Cinema Road, Ludhiana-141008 (Punjab)\nFactory: Bajra Road, Rahon Road, Bajra, Ludhiana-141007 (Punjab)",
   businessHours: "Mon - Sat: 9:30 AM - 8:00 PM",
   // Factory, Bajra Road, Ludhiana: 30°57'13.6"N 75°53'23.5"E
-  mapEmbedUrl: "https://www.google.com/maps?q=30.953782,75.889849&z=17&output=embed",
+  // Google "Embed a map" format for 30°57'13.6"N 75°53'23.5"E: pin at the exact spot plus the "Open in Maps" card
+  mapEmbedUrl: `https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1500!2d${FACTORY_LOCATION.lng}!3d${FACTORY_LOCATION.lat}!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzDCsDU3JzEzLjYiTiA3NcKwNTMnMjMuNSJF!5e0!3m2!1sen!2sin!4v1764000000000!5m2!1sen!2sin`,
   heroTitle: "Complete Evaporative Cooling Solutions Since 1980",
   heroSubtitle:
     "Manufacturer of evaporative air cooling systems, desert and industrial coolers, air washers, honeycomb pads, ducting, ventilation systems and more, for industries, institutions and homes.",

@@ -19,10 +19,6 @@ export default function Header({ siteName, phone, tel }: { siteName: string; pho
         <Link href="/" className="flex min-w-0 shrink-0 items-center gap-3" aria-label={`${siteName} home`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-light-sm.webp" alt={`${siteName} logo`} width={600} height={321} className="h-14 w-auto shrink-0 lg:h-[76px]" />
-          <span className="hidden leading-tight sm:block xl:hidden 2xl:block">
-            <span className="block text-lg font-extrabold tracking-tight whitespace-nowrap text-slate-900">{siteName.toUpperCase()}</span>
-            <span className="block text-[11px] font-medium text-slate-500">An ISO 9001:2015 Company</span>
-          </span>
         </Link>
 
         <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Main">

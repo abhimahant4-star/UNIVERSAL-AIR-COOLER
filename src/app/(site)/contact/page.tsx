@@ -4,7 +4,7 @@ import PageHero from "@/components/PageHero";
 import EnquiryForm from "@/components/EnquiryForm";
 import { WhatsAppIcon } from "@/components/Icons";
 import SocialLinks, { socialList } from "@/components/SocialLinks";
-import { FACTORY_LOCATION, getSettings } from "@/lib/settings";
+import { directionsUrl, getSettings, mapSrc } from "@/lib/settings";
 import { telLink, whatsappLink } from "@/lib/utils";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,13 +14,6 @@ export async function generateMetadata(): Promise<Metadata> {
     description: `Contact ${s.siteName} for air cooler prices, dealership and bulk orders. Call ${[s.phone, s.phone2].filter(Boolean).join(" / ")} or send an enquiry online.`,
     alternates: { canonical: "/contact" },
   };
-}
-
-/** Accepts either a plain embed URL or a full <iframe> snippet pasted from Google Maps. */
-function mapSrc(value: string) {
-  const m = value.match(/src="([^"]+)"/);
-  const url = (m ? m[1] : value).trim();
-  return /^https:\/\/(www\.)?google\.[a-z.]+\/maps/.test(url) ? url : null;
 }
 
 export default async function ContactPage() {
@@ -97,7 +90,7 @@ export default async function ContactPage() {
               )}
             </div>
             <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${FACTORY_LOCATION.lat},${FACTORY_LOCATION.lng}`}
+              href={directionsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary justify-center"

@@ -101,7 +101,7 @@ export const products = [
   {
     // Same specifications as the 150L model, with a 180-litre tank
     name: "Star Universal Commercial Cooler 180L", category: "commercial-coolers", featured: false,
-    images: ["comm180-a-w.jpg"],
+    images: ["comm180-a-w3.jpg"],
     shortDescription: '180-litre commercial cooler with 30" axial fan and 18,000 CMH air flow.',
     description: "A heavy-duty 180-litre commercial cooler with a 30-inch axial fan and large 1100 × 1150 mm cooling pad. Single-phase, 3-speed motor for shops, halls, workshops and factories.",
     features: `30" axial fan\n18,000 CMH air flow\n180-litre water tank\nSingle-phase 3-speed motor\nLarge 100 mm cooling pad\n${COMMON}`,
