@@ -68,7 +68,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
       />
 
       <section className="py-12 sm:py-16">
-        <div className="container-x grid gap-10 lg:grid-cols-2">
+        <div className="container-x grid grid-cols-1 gap-10 lg:grid-cols-2">
           <ProductImages images={images} name={p.name} />
           <div>
             {p.category && <p className="eyebrow">{p.category.name}</p>}
@@ -107,7 +107,7 @@ export default async function ProductDetailPage({ params }: { params: Params }) 
           </div>
         </div>
 
-        <div className="container-x mt-12 grid gap-10 lg:grid-cols-2">
+        <div className="container-x mt-12 grid grid-cols-1 gap-10 lg:grid-cols-2">
           <div>
             {p.description && (
               <>
